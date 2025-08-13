@@ -58,10 +58,6 @@ public void Install(IEngine engine, AppInstallContext context)
 }
 ```
 
-### As Owner of a DataMiner solution
-
-To register your DataMiner solution, you can use the `Skyline.DataMiner.SDMRegistration` package. This package provides the necessary classes and methods to register your solution with the DataMiner Service Delivery Model (SDM).
-
 ### About DataMiner
 
 DataMiner is a transformational platform that provides vendor-independent control and monitoring of devices and services. Out of the box and by design, it addresses key challenges such as security, complexity, multi-cloud, and much more. It has a pronounced open architecture and powerful capabilities enabling users to evolve easily and continuously.
