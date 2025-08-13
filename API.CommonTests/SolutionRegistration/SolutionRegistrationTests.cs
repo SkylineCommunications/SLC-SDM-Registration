@@ -232,7 +232,7 @@ namespace Skyline.DataMiner.SDM.Registration.Tests
 
 			// Act
 			long result = -1;
-			var act = () => result = registrar.Solutions.Count(SolutionRegistrationExposers.DefaultApiEndpoint.NotContains("service_management"));
+			var act = () => result = registrar.Solutions.Count(SolutionRegistrationExposers.DefaultApiEndpoint.Contains("service_management"));
 
 			// Assert
 			act.Should().NotThrow();
@@ -247,7 +247,7 @@ namespace Skyline.DataMiner.SDM.Registration.Tests
 
 			// Act
 			long result = -1;
-			var act = () => result = registrar.Solutions.Count(SolutionRegistrationExposers.VisualizationEndpoint.NotEqual("https://localhost/app/e3210645-842d-49e5-bb4d-905e69a67cf3"));
+			var act = () => result = registrar.Solutions.Count(SolutionRegistrationExposers.VisualizationEndpoint.Equal("https://localhost/app/e3210645-842d-49e5-bb4d-905e69a67cf3"));
 
 			// Assert
 			act.Should().NotThrow();
