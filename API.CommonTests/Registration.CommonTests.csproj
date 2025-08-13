@@ -1,0 +1,23 @@
+﻿<Project Sdk="MSTest.Sdk/3.10.0">
+	<PropertyGroup>
+		<TargetFramework>net48</TargetFramework>
+		<RootNamespace>Skyline.DataMiner.SDM.Registration.Tests</RootNamespace>
+		<LangVersion>latest</LangVersion>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<UseVSTest>true</UseVSTest>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="FluentAssertions" Version="7.2.0" />
+		<PackageReference Include="Moq" Version="4.18.4" />
+		<PackageReference Include="Skyline.DataMiner.Utils.DOM" Version="10.5.2.3" />
+		<PackageReference Include="Skyline.DataMiner.SDM.Abstractions" Version="0.0.0-B010" />
+		<PackageReference Include="Skyline.DataMiner.SDM.Linq" Version="0.0.0-b008" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\API.Common\Registration.Common.csproj" />
+		<ProjectReference Include="..\Install\Registration.Install.csproj" />
+	</ItemGroup>
+</Project>

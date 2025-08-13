@@ -1,0 +1,117 @@
+<div class="wrap">
+    <div class="card">
+        <h2>Solution Information</h2>
+        <div class="field">
+            <div class="label">Guid</div>
+            <div class="value">{ID}</div>
+        </div>
+        <div class="field">
+            <div class="label">ID</div>
+            <div class="value">{Solution ID}</div>
+        </div>
+        <div class="field">
+            <div class="label">Display Name</div>
+            <div class="value">{Display Name}</div>
+        </div>
+        <div class="field">
+            <div class="label">Version</div>
+            <div class="value">{Version}</div>
+        </div>
+        <div class="field">
+            <div class="label">Default Api Script Name</div>
+            <div class="value">{Default API Script Name}</div>
+        </div>
+        <div class="field">
+            <div class="label">Default Api Endpoint</div>
+            <div class="value">{Default API Endpoint}</div>
+        </div>
+        <div class="field">
+            <div class="label">Visualization Endpoint</div>
+            <div class="value">{Visualization Endpoint}</div>
+        </div>
+        <div class="field">
+            <div class="label">Un-install Script</div>
+            <div class="value">{Un-Install Script}</div>
+        </div>
+    </div>
+</div>
+
+<style>
+    :root {
+        --gap: 12px;
+        --label-w: 180px;
+        --yellow: #FFC208;
+        --white: #EFF0F0;
+        --black: #151A22;
+        --muted: #666;
+    }
+
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+        background: #ffffff00;
+        color: var(--black);
+        display: flex;
+        justify-content: center;
+    }
+
+    .wrap {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .card {
+        max-width: 900px;
+        background: var(--white);
+        border-radius: 10px;
+        padding: 18px;
+        box-shadow: 0 6px 18px rgba(20, 30, 40, 0.06);
+        color: var(--black);
+    }
+
+    .card h2 {
+        margin: 0 0 12px 0;
+        color: var(--yellow);
+        font-weight: bolder;
+    }
+
+    .field {
+        display: flex;
+        gap: 12px;
+        margin-bottom: var(--gap);
+        flex-wrap: wrap;
+        align-items: flex-start;
+    }
+
+    .label {
+        width: var(--label-w);
+        font-weight: 600;
+        color: var(--black);
+    }
+
+    .value {
+        flex: 1;
+        padding: 8px 0;
+        color: var(--black);
+        border-bottom: 1px solid #e1e6ea;
+        min-height: 38px;
+    }
+
+    @media (max-width:640px) {
+        .field {
+            flex-direction: column;
+        }
+
+        .label {
+            width: 100%;
+            font-size: 14px;
+        }
+
+        .value {
+            width: 100%;
+        }
+    }
+</style>
