@@ -5,8 +5,8 @@ namespace Skyline.DataMiner.SDM.Registration.Tests
 	using FluentAssertions;
 
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
-	using Skyline.DataMiner.Net.Database;
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
+	using Skyline.DataMiner.SDM.Linq;
 	using Skyline.DataMiner.SDM.Registration.Install.DOM;
 	using Skyline.DataMiner.Utils.DOM.Builders;
 	using Skyline.DataMiner.Utils.DOM.UnitTesting;
@@ -41,6 +41,10 @@ namespace Skyline.DataMiner.SDM.Registration.Tests
 							"Service")
 						.WithFieldValue(
 							ModelRegistrationDomMapper.ModelRegistrationProperties.SectionDefinitionId,
+							ModelRegistrationDomMapper.ModelRegistrationProperties.Version,
+							"1.0.1")
+						.WithFieldValue(
+							ModelRegistrationDomMapper.ModelRegistrationProperties.SectionDefinitionId,
 							ModelRegistrationDomMapper.ModelRegistrationProperties.ApiScriptName,
 							"ServiceManagement.CRUD.service")
 						.WithFieldValue(
@@ -51,6 +55,10 @@ namespace Skyline.DataMiner.SDM.Registration.Tests
 							ModelRegistrationDomMapper.ModelRegistrationProperties.SectionDefinitionId,
 							ModelRegistrationDomMapper.ModelRegistrationProperties.VisualizationEndpoint,
 							"https://localhost/app/e3210645-842d-49e5-bb4d-905e69a67cf3/service")
+						.WithFieldValue(
+							ModelRegistrationDomMapper.ModelRegistrationProperties.SectionDefinitionId,
+							ModelRegistrationDomMapper.ModelRegistrationProperties.Solution,
+							new Guid("962208d1-15ad-4373-9262-84857fb2a4f8")) // Service Management Solution
 						.Build(),
 
 					new DomInstanceBuilder()
@@ -69,6 +77,10 @@ namespace Skyline.DataMiner.SDM.Registration.Tests
 							"Rack")
 						.WithFieldValue(
 							ModelRegistrationDomMapper.ModelRegistrationProperties.SectionDefinitionId,
+							ModelRegistrationDomMapper.ModelRegistrationProperties.Version,
+							"2.0.5")
+						.WithFieldValue(
+							ModelRegistrationDomMapper.ModelRegistrationProperties.SectionDefinitionId,
 							ModelRegistrationDomMapper.ModelRegistrationProperties.ApiScriptName,
 							"NetworkManagement.CRUD.service")
 						.WithFieldValue(
@@ -79,6 +91,10 @@ namespace Skyline.DataMiner.SDM.Registration.Tests
 							ModelRegistrationDomMapper.ModelRegistrationProperties.SectionDefinitionId,
 							ModelRegistrationDomMapper.ModelRegistrationProperties.VisualizationEndpoint,
 							"https://localhost/app/7528ed0c-3d00-45a1-9e34-98a08910070c/rack")
+						.WithFieldValue(
+							ModelRegistrationDomMapper.ModelRegistrationProperties.SectionDefinitionId,
+							ModelRegistrationDomMapper.ModelRegistrationProperties.Solution,
+							new Guid("962208d1-15ad-4373-9262-84857fb2a4f8")) // Service Management Solution
 						.Build(),
 
 					// Network Model
@@ -108,11 +124,15 @@ namespace Skyline.DataMiner.SDM.Registration.Tests
 							ModelRegistrationDomMapper.ModelRegistrationProperties.SectionDefinitionId,
 							ModelRegistrationDomMapper.ModelRegistrationProperties.VisualizationEndpoint,
 							"https://localhost/app/7528ed0c-3d00-45a1-9e34-98a08910070c/network")
+						.WithFieldValue(
+							ModelRegistrationDomMapper.ModelRegistrationProperties.SectionDefinitionId,
+							ModelRegistrationDomMapper.ModelRegistrationProperties.Solution,
+							new Guid("ccb76df3-4085-446e-9f5a-732a05a94731"))
 						.Build(),
 
 					// Service Management Solution
 					new DomInstanceBuilder()
-						.WithID(new DomInstanceId(Guid.NewGuid())
+						.WithID(new DomInstanceId(new Guid("962208d1-15ad-4373-9262-84857fb2a4f8"))
 						{
 							ModuleId = SolutionRegistrationDomMapper.ModuleId,
 						})
@@ -145,7 +165,7 @@ namespace Skyline.DataMiner.SDM.Registration.Tests
 
 					// Network Management Solution
 					new DomInstanceBuilder()
-						.WithID(new DomInstanceId(Guid.NewGuid())
+						.WithID(new DomInstanceId(new Guid("ccb76df3-4085-446e-9f5a-732a05a94731"))
 						{
 							ModuleId = SolutionRegistrationDomMapper.ModuleId,
 						})
@@ -305,6 +325,27 @@ namespace Skyline.DataMiner.SDM.Registration.Tests
 			// Assert
 			act.Should().NotThrow();
 			result.Should().Be(1);
+		}
+
+		[TestMethod]
+		public void SdmRegistrar_Count_CustomFilter()
+		{
+			// Arrange
+			var registrar = new SdmRegistrar(_connection);
+			var solution = registrar.Solutions.AsQuery().First();
+			var allModels = registrar.Models.Read(new TRUEFilterElement<ModelRegistration>()).ToList();
+			var filter = new ANDFilterElement<ModelRegistration>(
+				ModelRegistrationExposers.Solution.Equal(solution.Reference.Guid),
+				ModelRegistrationExposers.Version.Contains("1.0"));
+
+			// Act
+			long result = -1;
+			var expected = allModels.Count(m => m.Solution.Guid == solution.Guid && m.Version.Contains("1.0"));
+			var act = () => result = registrar.Models.Count(filter);
+
+			// Assert
+			act.Should().NotThrow();
+			result.Should().Be(expected);
 		}
 	}
 }

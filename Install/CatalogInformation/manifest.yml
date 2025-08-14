@@ -51,7 +51,7 @@ source_code_url: https://github.com/SkylineCommunications/SLC-SDM-Registration
 # A valid URL that points to documentation.
 #   A valid URL
 #   Max length: 2048 characters
-documentation_url: https://github.com/SkylineCommunications/SLC-SDM-Registration
+documentation_url: https://github.com/SkylineCommunications/SLC-SDM-Registration/tree/main/docs
 
 # [Optional]
 # People who are responsible for this Catalog item. Might be developers, but this is not required.
@@ -70,3 +70,4 @@ owners:
 #   Cannot contain leading or trailing whitespace characters.
 tags:
   - dataminer
+  - Standard Data Model
