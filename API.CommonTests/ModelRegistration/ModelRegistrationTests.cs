@@ -114,6 +114,10 @@ namespace Skyline.DataMiner.SDM.Registration.Tests
 							"Network")
 						.WithFieldValue(
 							ModelRegistrationDomMapper.ModelRegistrationProperties.SectionDefinitionId,
+							ModelRegistrationDomMapper.ModelRegistrationProperties.Version,
+							"1.0.1")
+						.WithFieldValue(
+							ModelRegistrationDomMapper.ModelRegistrationProperties.SectionDefinitionId,
 							ModelRegistrationDomMapper.ModelRegistrationProperties.ApiScriptName,
 							"NetworkManagement.CRUD.network")
 						.WithFieldValue(
@@ -147,6 +151,9 @@ namespace Skyline.DataMiner.SDM.Registration.Tests
 								SolutionRegistrationDomMapper.SolutionRegistrationProperties.DisplayName,
 								"Service Management")
 							.WithFieldValue(
+								SolutionRegistrationDomMapper.SolutionRegistrationProperties.Version,
+								"1.0.1")
+							.WithFieldValue(
 								SolutionRegistrationDomMapper.SolutionRegistrationProperties.DefaultApiScriptName,
 								"ServiceManagement.CRUD")
 							.WithFieldValue(
@@ -179,6 +186,9 @@ namespace Skyline.DataMiner.SDM.Registration.Tests
 							.WithFieldValue(
 								SolutionRegistrationDomMapper.SolutionRegistrationProperties.DisplayName,
 								"Network Management")
+							.WithFieldValue(
+								SolutionRegistrationDomMapper.SolutionRegistrationProperties.Version,
+								"5.1.16")
 							.WithFieldValue(
 								SolutionRegistrationDomMapper.SolutionRegistrationProperties.DefaultApiScriptName,
 								"NetworkManagement.CRUD")
@@ -231,12 +241,14 @@ namespace Skyline.DataMiner.SDM.Registration.Tests
 				{
 					Name = "service",
 					DisplayName = "Service",
+					Version = "1.0.1",
 					Solution = solution,
 				},
 				new ModelRegistration
 				{
 					Name = "rack",
 					DisplayName = "Rack",
+					Version = "1.0.1",
 					Solution = solution,
 				},
 			};

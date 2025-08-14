@@ -217,6 +217,11 @@ namespace Skyline.DataMiner.SDM.Registration.Middleware
 				entry.Exceptions.Add(new ArgumentException("ModelRegistration Display Name cannot be null or empty.", nameof(modelRegistration)));
 			}
 
+			if (String.IsNullOrEmpty(modelRegistration.Version))
+			{
+				entry.Exceptions.Add(new ArgumentException("ModelRegistration Version cannot be null or empty.", nameof(modelRegistration)));
+			}
+
 			if (modelRegistration.Solution == default)
 			{
 				entry.Exceptions.Add(new ArgumentException("ModelRegistration Solution cannot be null or empty.", nameof(modelRegistration)));

@@ -41,6 +41,10 @@ namespace Skyline.DataMiner.SDM.Registration.Tests
 							"Service")
 						.WithFieldValue(
 							ModelRegistrationDomMapper.ModelRegistrationProperties.SectionDefinitionId,
+							ModelRegistrationDomMapper.ModelRegistrationProperties.Version,
+							"1.0.1")
+						.WithFieldValue(
+							ModelRegistrationDomMapper.ModelRegistrationProperties.SectionDefinitionId,
 							ModelRegistrationDomMapper.ModelRegistrationProperties.ApiScriptName,
 							"ServiceManagement.CRUD.service")
 						.WithFieldValue(
@@ -68,6 +72,10 @@ namespace Skyline.DataMiner.SDM.Registration.Tests
 							ModelRegistrationDomMapper.ModelRegistrationProperties.SectionDefinitionId,
 							ModelRegistrationDomMapper.ModelRegistrationProperties.DisplayName,
 							"Network")
+						.WithFieldValue(
+							ModelRegistrationDomMapper.ModelRegistrationProperties.SectionDefinitionId,
+							ModelRegistrationDomMapper.ModelRegistrationProperties.Version,
+							"1.0.1")
 						.WithFieldValue(
 							ModelRegistrationDomMapper.ModelRegistrationProperties.SectionDefinitionId,
 							ModelRegistrationDomMapper.ModelRegistrationProperties.ApiScriptName,
@@ -98,6 +106,9 @@ namespace Skyline.DataMiner.SDM.Registration.Tests
 							.WithFieldValue(
 								SolutionRegistrationDomMapper.SolutionRegistrationProperties.DisplayName,
 								"Service Management")
+							.WithFieldValue(
+								SolutionRegistrationDomMapper.SolutionRegistrationProperties.Version,
+								"1.0.1")
 							.WithFieldValue(
 								SolutionRegistrationDomMapper.SolutionRegistrationProperties.DefaultApiScriptName,
 								"ServiceManagement.CRUD")
@@ -131,6 +142,9 @@ namespace Skyline.DataMiner.SDM.Registration.Tests
 							.WithFieldValue(
 								SolutionRegistrationDomMapper.SolutionRegistrationProperties.DisplayName,
 								"Network Management")
+							.WithFieldValue(
+								SolutionRegistrationDomMapper.SolutionRegistrationProperties.Version,
+								"1.0.1")
 							.WithFieldValue(
 								SolutionRegistrationDomMapper.SolutionRegistrationProperties.DefaultApiScriptName,
 								"NetworkManagement.CRUD")
@@ -168,6 +182,7 @@ namespace Skyline.DataMiner.SDM.Registration.Tests
 			var solution1 = new SolutionRegistration
 			{
 				ID = "media_ops_plan",
+				Version = "1.0.1",
 			};
 
 			var solutionAct = () => registrar.Solutions.Create(solution1);
