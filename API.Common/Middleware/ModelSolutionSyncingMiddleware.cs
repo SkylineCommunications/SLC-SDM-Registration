@@ -14,7 +14,7 @@ namespace Skyline.DataMiner.SDM.Registration.Middleware
 
 	using SLDataGateway.API.Types.Querying;
 
-	public class ModelSolutionSyncingMiddleware : IBulkStorageProviderMiddleware<ModelRegistration>
+	internal class ModelSolutionSyncingMiddleware : IBulkStorageProviderMiddleware<ModelRegistration>
 	{
 		private readonly IBulkStorageProvider<SolutionRegistration> _solutionProvider;
 
