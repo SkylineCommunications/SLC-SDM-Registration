@@ -53,7 +53,6 @@ using System;
 
 using Skyline.AppInstaller;
 using Skyline.DataMiner.Automation;
-using Skyline.DataMiner.Net;
 using Skyline.DataMiner.Net.AppPackages;
 using Skyline.DataMiner.SDM.Registration.Install.DOM;
 using Skyline.DataMiner.SDM.Registration.Install.LCA;

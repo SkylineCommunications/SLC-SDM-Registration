@@ -6,8 +6,6 @@ namespace Skyline.DataMiner.SDM.Registration.Middleware
 	using System.Collections.Generic;
 	using System.Linq;
 
-	using Microsoft.CodeAnalysis;
-
 	using Skyline.DataMiner.Net.Helper;
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
 	using Skyline.DataMiner.SDM.Registration.Exceptions;
