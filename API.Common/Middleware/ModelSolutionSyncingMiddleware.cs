@@ -162,9 +162,9 @@ namespace Skyline.DataMiner.SDM.Registration.Middleware
 			catch (SdmBulkCrudException<ModelRegistration> ex)
 			{
 				// Add the failed items to the invalid list
-				foreach (var faillure in ex.FailedItems)
+				foreach (var failure in ex.FailedItems)
 				{
-					exceptionBuilder.AddFailed(faillure.Item, faillure.Exception);
+					exceptionBuilder.AddFailed(failure.Item, failure.Exception);
 				}
 			}
 
@@ -198,14 +198,14 @@ namespace Skyline.DataMiner.SDM.Registration.Middleware
 			catch (SdmBulkCrudException<SolutionRegistration> ex)
 			{
 				// If the solution could not be updated, add the models for that solution to the failed list
-				foreach (var faillure in ex.FailedItems)
+				foreach (var failure in ex.FailedItems)
 				{
-					var failedModels = groupedModels[faillure.Item.Guid];
-					failedModels.ForEach(m => exceptionBuilder.AddFailed(m, faillure.Exception));
+					var failedModels = groupedModels[failure.Item.Guid];
+					failedModels.ForEach(m => exceptionBuilder.AddFailed(m, failure.Exception));
 				}
 			}
 
-			// Throw exception if their were any invalid models
+			// Throw exception if there are any invalid models
 			if (exceptionBuilder.HasFailure)
 			{
 				throw exceptionBuilder.Build();

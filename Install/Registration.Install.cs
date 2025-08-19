@@ -77,14 +77,6 @@ public class Script
 			var installer = new AppInstaller(Engine.SLNetRaw, context);
 			installer.InstallDefaultContent();
 
-			var directory = installer.GetSetupContentDirectory();
-			installer.Log(directory);
-
-			foreach (var file in System.IO.Directory.GetFiles(directory))
-			{
-				installer.Log(file);
-			}
-
 			var domInstaller = new DomInstaller(engine.GetUserConnection(), installer.Log);
 			domInstaller.InstallDefaultContent();
 

@@ -21,14 +21,6 @@ namespace Skyline.DataMiner.SDM.Registration.Install.LCA
 				throw new ArgumentNullException(nameof(context), "AppInstallContext cannot be null.");
 			}
 
-			var directory = new AppInstaller(connection, context).GetSetupContentDirectory();
-			Log(directory);
-
-			foreach(var file in System.IO.Directory.GetFiles(directory))
-			{
-				Log(file);
-			}
-
 			var lca_context = new AppInstallContext(
 				new AppInstaller(connection, context).GetSetupContentDirectory(),
 				AppInfo.FromXml(context.AppInfo.ToXml()));
