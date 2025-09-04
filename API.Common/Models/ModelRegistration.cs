@@ -41,8 +41,8 @@ namespace Skyline.DataMiner.SDM.Registration
 		public string VisualizationEndpoint { get; set; }
 
 		/// <summary>
-		/// Gets the reference to the solution registration this model belongs to.
+		/// Gets or sets the reference to the solution registration this model belongs to.
 		/// </summary>
-		public SdmObjectReference<SolutionRegistration> Solution { get; internal set; }
+		public SdmObjectReference<SolutionRegistration> Solution { get; set; }
 	}
 }
