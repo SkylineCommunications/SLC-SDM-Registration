@@ -29,13 +29,13 @@ namespace Skyline.DataMiner.SDM.Registration
 		{
 			Solutions = Sdm.CreateProviderBuilder(new SolutionRegistrationDomStorageProvider(connection))
 				.AddMiddleware(new SolutionValidationMiddleware())
-				.AddMiddleware(new SdmTracingMiddleware<SolutionRegistration>())
+				//.AddMiddleware(new SdmTracingMiddleware<SolutionRegistration>())
 				.Build();
 
 			Models = Sdm.CreateProviderBuilder(new ModelRegistrationDomStorageProvider(connection))
 				.AddMiddleware(new ModelSolutionSyncingMiddleware(Solutions))
 				.AddMiddleware(new ModelValidationMiddleware())
-				.AddMiddleware(new SdmTracingMiddleware<ModelRegistration>())
+				//.AddMiddleware(new SdmTracingMiddleware<ModelRegistration>())
 				.Build();
 		}
 
