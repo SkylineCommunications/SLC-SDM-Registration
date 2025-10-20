@@ -42,6 +42,21 @@ namespace Skyline.DataMiner.SDM.Registration
 		public string VisualizationEndpoint { get; set; }
 
 		/// <summary>
+		/// Gets or sets the endpoint for the creation of the solution's visualization.
+		/// </summary>
+		public string VisualizationCreateEndpoint { get; set; }
+
+		/// <summary>
+		/// Gets or sets the endpoint for the update of the solution's visualization.
+		/// </summary>
+		public string VisualizationUpdateEndpoint { get; set; }
+
+		/// <summary>
+		/// Gets or sets the endpoint for the deletion of the solution's visualization.
+		/// </summary>
+		public string VisualizationDeleteEndpoint { get; set; }
+
+		/// <summary>
 		/// Gets or sets the name of the script used to uninstall the solution.
 		/// </summary>
 		public string UninstallScript { get; set; }
