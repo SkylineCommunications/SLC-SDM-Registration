@@ -28,6 +28,9 @@ namespace Skyline.DataMiner.SDM.Registration
 			internal static FieldDescriptorID DefaultApiScriptName = new FieldDescriptorID(new Guid("ffb69193-eb5b-4923-850c-df375c482ad1"));
 			internal static FieldDescriptorID DefaultApiEndpoint = new FieldDescriptorID(new Guid("9d49ac29-aa64-4468-96ab-c88dda0dd4e0"));
 			internal static FieldDescriptorID VisualizationEndpoint = new FieldDescriptorID(new Guid("012b0a5b-252f-4ea7-8008-546da1e1c7b2"));
+			internal static FieldDescriptorID VisualizationCreateEndpoint = new FieldDescriptorID(new Guid("6eb2f8b8-044d-492f-875f-7471c48600b4"));
+			internal static FieldDescriptorID VisualizationUpdateEndpoint = new FieldDescriptorID(new Guid("d47ec1f3-2bb9-40b1-a7a0-7668d132a39a"));
+			internal static FieldDescriptorID VisualizationDeleteEndpoint = new FieldDescriptorID(new Guid("04da366b-997c-40bc-a803-292df4f67fdf"));
 			internal static FieldDescriptorID UninstallScript = new FieldDescriptorID(new Guid("03f9f28c-d8b2-4cfa-9e79-607fe0c262b3"));
 			internal static FieldDescriptorID Models = new FieldDescriptorID(new Guid("01d76fa0-8ebb-4eb1-885b-6f0e209c5ebb"));
 		}
