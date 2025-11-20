@@ -21,7 +21,7 @@ namespace Skyline.DataMiner.SDM.Registration
 		/// <exception cref="ArgumentNullException">
 		/// Thrown when <paramref name="dms"/> is <c>null</c>.
 		/// </exception>
-		public static SdmRegistrar GetSdmRegistrar(GQIDMS dms)
+		public static SdmRegistrar GetSdmRegistrar(this GQIDMS dms)
 		{
 			if (dms is null)
 			{
