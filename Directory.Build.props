@@ -14,7 +14,7 @@
 		<Content Include="..\.editorconfig">
 			<Link>Properties\.editorconfig</Link>
 		</Content>
-		<AdditionalFiles Include="..\..\allowed_words.dic">
+		<AdditionalFiles Include="..\allowed_words.dic">
 			<Link>Properties\allowed_words.dic</Link>
 		</AdditionalFiles>
 	</ItemGroup>

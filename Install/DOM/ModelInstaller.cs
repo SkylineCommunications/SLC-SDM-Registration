@@ -9,7 +9,7 @@
 
 	public partial class DomInstaller
 	{
-		private void InstallModel(DomHelper helper)
+		private void InstallModel(DomHelper helper, Shared.Version existingVersion)
 		{
 			var modelProperties = new SectionDefinitionBuilder()
 				.WithName(nameof(ModelRegistrationDomMapper.ModelRegistrationProperties))
@@ -78,7 +78,12 @@
 					.WithTooltip("The solution this model belongs to."))
 				.Build();
 
-			Import(helper.SectionDefinitions, SectionDefinitionExposers.ID.Equal(ModelRegistrationDomMapper.ModelRegistrationProperties.SectionDefinitionId), modelProperties);
+			Import(
+				helper.SectionDefinitions,
+				SectionDefinitionExposers.ID.Equal(ModelRegistrationDomMapper.ModelRegistrationProperties.SectionDefinitionId),
+				modelProperties,
+				existingVersion,
+				Constants.Solution.Version);
 			Log("Installed section definition for Model Registration");
 
 			var modelDefinition = new DomDefinitionBuilder()
@@ -102,7 +107,12 @@
 				},
 			};
 
-			Import(helper.DomDefinitions, DomDefinitionExposers.Id.Equal(ModelRegistrationDomMapper.DomDefinitionId), modelDefinition);
+			Import(
+				helper.DomDefinitions,
+				DomDefinitionExposers.Id.Equal(ModelRegistrationDomMapper.DomDefinitionId),
+				modelDefinition,
+				existingVersion,
+				Constants.Solution.Version);
 			Log("Installed DOM definition for Model Registration");
 		}
 	}

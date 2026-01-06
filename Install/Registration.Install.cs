@@ -55,7 +55,6 @@ using Skyline.AppInstaller;
 using Skyline.DataMiner.Automation;
 using Skyline.DataMiner.Net.AppPackages;
 using Skyline.DataMiner.SDM.Registration.Install.DOM;
-using Skyline.DataMiner.SDM.Registration.Install.LCA;
 
 /// <summary>
 /// DataMiner Script Class.
@@ -79,9 +78,6 @@ public class Script
 
 			var domInstaller = new DomInstaller(engine.GetUserConnection(), installer.Log);
 			domInstaller.InstallDefaultContent();
-
-			var lcaInstaller = new LcaInstaller(engine.GetUserConnection(), context, installer.Log);
-			lcaInstaller.InstallDefaultContent();
 		}
 		catch (Exception e)
 		{
