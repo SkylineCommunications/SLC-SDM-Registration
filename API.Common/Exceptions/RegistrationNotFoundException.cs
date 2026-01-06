@@ -1,6 +1,4 @@
-﻿// Ignore Spelling: SDM
-
-namespace Skyline.DataMiner.SDM.Registration.Exceptions
+﻿namespace Skyline.DataMiner.SDM.Registration.Exceptions
 {
 	using System;
 	using System.Runtime.Serialization;

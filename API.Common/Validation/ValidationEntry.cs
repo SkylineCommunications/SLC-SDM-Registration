@@ -1,6 +1,4 @@
-﻿// Ignore Spelling: SDM
-
-namespace Skyline.DataMiner.SDM.Registration.Validation
+﻿namespace Skyline.DataMiner.SDM.Registration.Validation
 {
 	using System;
 	using System.Collections.Generic;

@@ -1,6 +1,4 @@
-﻿// Ignore Spelling: SDM LCA
-
-namespace Skyline.DataMiner.SDM.Registration.Install.LCA
+﻿namespace Skyline.DataMiner.SDM.Registration.Install.LCA
 {
 	using System;
 	using System.Linq;

@@ -1,5 +1,7 @@
 ﻿namespace Skyline.DataMiner.SDM.Registration.Install.DOM
 {
+	using System;
+
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel.Concatenation;
 	using Skyline.DataMiner.Net.Sections;
@@ -35,7 +37,7 @@
 					.WithName("API Script Name")
 					.WithType(typeof(string))
 					.WithIsOptional(true)
-					.WithTooltip(""))
+					.WithTooltip(String.Empty))
 				.AddFieldDescriptor(new FieldDescriptorBuilder()
 					.WithID(ModelRegistrationDomMapper.ModelRegistrationProperties.ApiEndpoint)
 					.WithName("API Endpoint")

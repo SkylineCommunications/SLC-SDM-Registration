@@ -1,6 +1,4 @@
-﻿// Ignore Spelling: SDM Middleware
-
-namespace Skyline.DataMiner.SDM.Registration.Middleware
+﻿namespace Skyline.DataMiner.SDM.Registration.Middleware
 {
 	using System;
 	using System.Collections.Generic;
@@ -10,7 +8,7 @@ namespace Skyline.DataMiner.SDM.Registration.Middleware
 
 	using SLDataGateway.API.Types.Querying;
 
-	internal class ModelValidationMiddleware : IBulkStorageProviderMiddleware<ModelRegistration>
+	internal class ModelValidationMiddleware : IBulkRepositoryMiddleware<ModelRegistration>
 	{
 		public long OnCount(FilterElement<ModelRegistration> filter, Func<FilterElement<ModelRegistration>, long> next)
 		{

@@ -1,6 +1,4 @@
-﻿// Ignore Spelling: SDM Middleware
-
-namespace Skyline.DataMiner.SDM.Registration.Middleware
+﻿namespace Skyline.DataMiner.SDM.Registration.Middleware
 {
 	using System;
 	using System.Collections.Generic;
@@ -12,11 +10,11 @@ namespace Skyline.DataMiner.SDM.Registration.Middleware
 
 	using SLDataGateway.API.Types.Querying;
 
-	internal class ModelSolutionSyncingMiddleware : IBulkStorageProviderMiddleware<ModelRegistration>
+	internal class ModelSolutionSyncingMiddleware : IBulkRepositoryMiddleware<ModelRegistration>
 	{
-		private readonly IBulkStorageProvider<SolutionRegistration> _solutionProvider;
+		private readonly IBulkRepository<SolutionRegistration> _solutionProvider;
 
-		internal ModelSolutionSyncingMiddleware(IBulkStorageProvider<SolutionRegistration> solutionProvider)
+		internal ModelSolutionSyncingMiddleware(IBulkRepository<SolutionRegistration> solutionProvider)
 		{
 			_solutionProvider = solutionProvider ?? throw new ArgumentNullException(nameof(solutionProvider));
 		}
@@ -89,7 +87,7 @@ namespace Skyline.DataMiner.SDM.Registration.Middleware
 		{
 			// Fetch the solution
 			var solution = _solutionProvider
-				.Read(SolutionRegistrationExposers.Guid.Equal(model.Solution))
+				.Read(SolutionRegistrationExposers.Identifier.Equal(model.Solution))
 				.FirstOrDefault();
 			if (solution is null)
 			{
@@ -130,13 +128,13 @@ namespace Skyline.DataMiner.SDM.Registration.Middleware
 		{
 			// Fetch all the needed solutions
 			var solutionIds = models.Select(m => m.Solution).Distinct().ToList();
-			var solutions = new Dictionary<Guid, SolutionRegistration>();
+			var solutions = new Dictionary<string, SolutionRegistration>();
 			foreach (var batch in solutionIds.Batch(100))
 			{
-				var filters = batch.Select(id => SolutionRegistrationExposers.Guid.Equal(id)).ToArray();
+				var filters = batch.Select(id => SolutionRegistrationExposers.Identifier.Equal(id)).ToArray();
 				_solutionProvider
 					.Read(new ORFilterElement<SolutionRegistration>(filters))
-					.ForEach(s => solutions[s.Guid] = s);
+					.ForEach(s => solutions[s.Identifier] = s);
 			}
 
 			// Check if there are any models that do not have a valid solution
@@ -180,12 +178,12 @@ namespace Skyline.DataMiner.SDM.Registration.Middleware
 				var solutionModels = solution.Models.ToList();
 				if (addition)
 				{
-					solutionModels.AddRange(group.Value.Select(m => m.Reference));
+					solutionModels.AddRange(group.Value.Select(m => SdmObjectReference<ModelRegistration>.Convert(m)));
 					solution.Models = solutionModels.Distinct().ToList();
 				}
 				else
 				{
-					solutionModels.RemoveAll(modelRef => group.Value.Any(m => m.Reference == modelRef));
+					solutionModels.RemoveAll(modelRef => group.Value.Any(m => SdmObjectReference<ModelRegistration>.Convert(m) == modelRef));
 					solution.Models = solutionModels.Distinct().ToList();
 				}
 			}
@@ -200,7 +198,7 @@ namespace Skyline.DataMiner.SDM.Registration.Middleware
 				// If the solution could not be updated, add the models for that solution to the failed list
 				foreach (var failure in ex.FailedItems)
 				{
-					var failedModels = groupedModels[failure.Item.Guid];
+					var failedModels = groupedModels[failure.Item];
 					failedModels.ForEach(m => exceptionBuilder.AddFailed(m, failure.Exception));
 				}
 			}

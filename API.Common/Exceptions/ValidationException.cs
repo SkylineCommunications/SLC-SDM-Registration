@@ -1,6 +1,4 @@
-﻿// Ignore Spelling: SDM
-
-namespace Skyline.DataMiner.SDM.Registration.Exceptions
+﻿namespace Skyline.DataMiner.SDM.Registration.Exceptions
 {
 	using System;
 	using System.Runtime.Serialization;
@@ -9,7 +7,7 @@ namespace Skyline.DataMiner.SDM.Registration.Exceptions
 	/// Represents errors that occur during validation in the SDM registration process.
 	/// </summary>
 	[Serializable]
-	public class ValidationException : Exception
+	public class ValidationException : SdmRegistrarException
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ValidationException"/> class.

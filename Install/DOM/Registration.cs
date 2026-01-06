@@ -1,6 +1,4 @@
-﻿// Ignore Spelling: SDM
-
-namespace Skyline.DataMiner.SDM.Registration.Install.DOM
+﻿namespace Skyline.DataMiner.SDM.Registration.Install.DOM
 {
 	using System;
 	using System.Collections.Generic;

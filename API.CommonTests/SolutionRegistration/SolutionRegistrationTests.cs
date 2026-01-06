@@ -278,11 +278,54 @@ namespace Skyline.DataMiner.SDM.Registration.Tests
 			// Act
 			long result = -1;
 			var act = () => result = registrar.Solutions.Count(SolutionRegistrationExposers.Models.Contains(
-				new SdmObjectReference<ModelRegistration>(new Guid("9b561e12-9da5-4c49-a553-be4c6f5bbc0e"))));
+				new SdmObjectReference<ModelRegistration>("9b561e12-9da5-4c49-a553-be4c6f5bbc0e")));
 
 			// Assert
 			act.Should().NotThrow();
 			result.Should().Be(1);
+		}
+
+		[TestMethod]
+		public void JsonTest()
+		{
+			// Arrange
+			var jsonString = @"{
+  ""ID"": ""string"",
+  ""DisplayName"": ""string"",
+  ""Version"": ""string"",
+  ""DefaultApiScriptName"": ""string"",
+  ""DefaultApiEndpoint"": ""string"",
+  ""VisualizationEndpoint"": ""string"",
+  ""VisualizationCreateEndpoint"": ""string"",
+  ""VisualizationUpdateEndpoint"": ""string"",
+  ""VisualizationDeleteEndpoint"": ""string"",
+  ""UninstallScript"": ""string"",
+  ""Models"": [
+    ""123e4567-e89b-12d3-a456-426614174000""
+  ],
+  ""Identifier"": ""string""
+}";
+
+			// Act
+			var result = default(SolutionRegistration);
+			var act = () => result = Newtonsoft.Json.JsonConvert.DeserializeObject<SolutionRegistration>(jsonString);
+
+			// Assert
+			act.Should().NotThrow();
+			result.Should().NotBeNull();
+			result.ID.Should().Be("string");
+			result.DisplayName.Should().Be("string");
+			result.Version.Should().Be("string");
+			result.DefaultApiScriptName.Should().Be("string");
+			result.DefaultApiEndpoint.Should().Be("string");
+			result.VisualizationEndpoint.Should().Be("string");
+			result.VisualizationCreateEndpoint.Should().Be("string");
+			result.VisualizationUpdateEndpoint.Should().Be("string");
+			result.VisualizationDeleteEndpoint.Should().Be("string");
+			result.UninstallScript.Should().Be("string");
+			result.Models.Should().HaveCount(1);
+			result.Models.Should().ContainSingle(m => m.Identifier == "123e4567-e89b-12d3-a456-426614174000");
+			result.Identifier.Should().Be("string");
 		}
 	}
 }

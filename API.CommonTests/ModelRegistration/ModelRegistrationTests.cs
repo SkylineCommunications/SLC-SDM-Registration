@@ -11,6 +11,8 @@ namespace Skyline.DataMiner.SDM.Registration.Tests
 	using Skyline.DataMiner.Utils.DOM.Builders;
 	using Skyline.DataMiner.Utils.DOM.UnitTesting;
 
+	using SLDataGateway.API.Querying;
+
 	[TestClass]
 	public class ModelRegistrationTests
 	{
@@ -20,6 +22,8 @@ namespace Skyline.DataMiner.SDM.Registration.Tests
 		public void Setup()
 		{
 			var messageHandler = new DomSLNetMessageHandler();
+			_connection = new DomConnectionMock(messageHandler);
+			new DomInstaller(_connection).InstallDefaultContent();
 			messageHandler.SetInstances(
 				ModelRegistrationDomMapper.ModuleId,
 				[
@@ -206,8 +210,6 @@ namespace Skyline.DataMiner.SDM.Registration.Tests
 								}))
 						.Build(),
 				]);
-			_connection = new DomConnectionMock(messageHandler);
-			new DomInstaller(_connection).InstallDefaultContent();
 		}
 
 		[TestMethod]
@@ -258,7 +260,7 @@ namespace Skyline.DataMiner.SDM.Registration.Tests
 			modelAct.Should().NotThrow();
 
 			// Act
-			solution = registrar.GetSolutionByGuid(solution.Guid);
+			solution = registrar.Solutions.Read(SolutionRegistrationExposers.Identifier.Equal(solution.Identifier)).FirstOrDefault();
 
 			// Assert
 			solution.Models.Should().HaveCount(2);
@@ -344,15 +346,15 @@ namespace Skyline.DataMiner.SDM.Registration.Tests
 		{
 			// Arrange
 			var registrar = new SdmRegistrar(_connection);
-			var solution = registrar.Solutions.AsQuery().First();
+			var solution = registrar.Solutions.Read(SolutionRegistrationExposers.ID.Equal("service_management")).First();
 			var allModels = registrar.Models.Read(new TRUEFilterElement<ModelRegistration>()).ToList();
 			var filter = new ANDFilterElement<ModelRegistration>(
-				ModelRegistrationExposers.Solution.Equal(solution.Reference.Guid),
+				ModelRegistrationExposers.Solution.Equal(solution),
 				ModelRegistrationExposers.Version.Contains("1.0"));
 
 			// Act
 			long result = -1;
-			var expected = allModels.Count(m => m.Solution.Guid == solution.Guid && m.Version.Contains("1.0"));
+			var expected = allModels.Count(m => m.Solution == solution && m.Version.Contains("1.0"));
 			var act = () => result = registrar.Models.Count(filter);
 
 			// Assert

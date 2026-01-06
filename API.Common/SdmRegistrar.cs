@@ -1,6 +1,4 @@
-﻿// Ignore Spelling: SDM
-
-namespace Skyline.DataMiner.SDM.Registration
+﻿namespace Skyline.DataMiner.SDM.Registration
 {
 	using System;
 	using System.Collections.Generic;
@@ -8,7 +6,6 @@ namespace Skyline.DataMiner.SDM.Registration
 
 	using Skyline.DataMiner.Net;
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
-	using Skyline.DataMiner.SDM.Middleware;
 	using Skyline.DataMiner.SDM.Registration.Exceptions;
 	using Skyline.DataMiner.SDM.Registration.Middleware;
 
@@ -27,12 +24,18 @@ namespace Skyline.DataMiner.SDM.Registration
 		/// <param name="connection">The connection to use for storage providers.</param>
 		public SdmRegistrar(IConnection connection)
 		{
-			Solutions = Sdm.CreateProviderBuilder(new SolutionRegistrationDomStorageProvider(connection))
+			var solutionRepository = new SolutionRegistrationDomRepository(connection);
+			Solutions = Sdm.CreateBuilder()
+				.For<SolutionRegistration>()
+				.Use<IObservableBulkRepository<SolutionRegistration>>(solutionRepository)
 				.AddMiddleware(new SolutionValidationMiddleware())
 				//.AddMiddleware(new SdmTracingMiddleware<SolutionRegistration>())
 				.Build();
 
-			Models = Sdm.CreateProviderBuilder(new ModelRegistrationDomStorageProvider(connection))
+			var modelRepository = new ModelRegistrationDomRepository(connection);
+			Models = Sdm.CreateBuilder()
+				.For<ModelRegistration>()
+				.Use<IObservableBulkRepository<ModelRegistration>>(modelRepository)
 				.AddMiddleware(new ModelSolutionSyncingMiddleware(Solutions))
 				.AddMiddleware(new ModelValidationMiddleware())
 				//.AddMiddleware(new SdmTracingMiddleware<ModelRegistration>())
@@ -42,44 +45,27 @@ namespace Skyline.DataMiner.SDM.Registration
 		/// <summary>
 		/// Gets the storage provider for solution registrations.
 		/// </summary>
-		public IObservableBulkStorageProvider<SolutionRegistration> Solutions { get; }
+		public IObservableBulkRepository<SolutionRegistration> Solutions { get; }
 
 		/// <summary>
 		/// Gets the storage provider for model registrations.
 		/// </summary>
-		public IObservableBulkStorageProvider<ModelRegistration> Models { get; }
+		public IObservableBulkRepository<ModelRegistration> Models { get; }
 
 		#region Solutions
 
 		/// <summary>
-		/// Retrieves a solution registration by its unique <see cref="Guid"/> identifier.
-		/// </summary>
-		/// <param name="identifier">The unique identifier of the solution.</param>
-		/// <returns>The matching <see cref="SolutionRegistration"/>.</returns>
-		/// <exception cref="RegistrationNotFoundException">Thrown if no solution is found with the specified identifier.</exception>
-		public SolutionRegistration GetSolutionByGuid(Guid identifier)
-		{
-			var solution = Solutions.Read(SolutionRegistrationExposers.Guid.Equal(identifier)).FirstOrDefault();
-			if (solution is null)
-			{
-				throw new RegistrationNotFoundException($"Solution Registration with identifier: {identifier} was not found.");
-			}
-
-			return solution;
-		}
-
-		/// <summary>
 		/// Retrieves a solution registration by its string identifier.
 		/// </summary>
-		/// <param name="identifier">The string identifier of the solution.</param>
+		/// <param name="solutionId">The string identifier of the solution.</param>
 		/// <returns>The matching <see cref="SolutionRegistration"/>.</returns>
 		/// <exception cref="RegistrationNotFoundException">Thrown if no solution is found with the specified identifier.</exception>
-		public SolutionRegistration GetSolutionById(string identifier)
+		public SolutionRegistration GetSolutionById(string solutionId)
 		{
-			var solution = Solutions.Read(SolutionRegistrationExposers.ID.Equal(identifier)).FirstOrDefault();
+			var solution = Solutions.Read(SolutionRegistrationExposers.ID.Equal(solutionId)).FirstOrDefault();
 			if (solution is null)
 			{
-				throw new RegistrationNotFoundException($"Solution Registration with identifier: {identifier} was not found.");
+				throw new RegistrationNotFoundException($"Solution Registration with ID: {solutionId} was not found.");
 			}
 
 			return solution;
@@ -115,23 +101,6 @@ namespace Skyline.DataMiner.SDM.Registration
 		#endregion
 
 		#region Models
-
-		/// <summary>
-		/// Retrieves a model registration by its unique <see cref="Guid"/> identifier.
-		/// </summary>
-		/// <param name="identifier">The unique identifier of the model.</param>
-		/// <returns>The matching <see cref="ModelRegistration"/>.</returns>
-		/// <exception cref="RegistrationNotFoundException">Thrown if no model is found with the specified identifier.</exception>
-		public ModelRegistration GetModelByGuid(Guid identifier)
-		{
-			var model = Models.Read(ModelRegistrationExposers.Guid.Equal(identifier)).FirstOrDefault();
-			if (model is null)
-			{
-				throw new RegistrationNotFoundException($"Model Registration with identifier: {identifier} was not found.");
-			}
-
-			return model;
-		}
 
 		/// <summary>
 		/// Retrieves a model registration by its name.
@@ -186,7 +155,7 @@ namespace Skyline.DataMiner.SDM.Registration
 				throw new ArgumentNullException(nameof(solution), "Solution Registration cannot be null.");
 			}
 
-			return GetModelsBySolution(solution.Reference);
+			return GetModelsBySolution(new SdmObjectReference<SolutionRegistration>(solution.Identifier));
 		}
 
 		/// <summary>

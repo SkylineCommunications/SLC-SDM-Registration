@@ -1,6 +1,4 @@
-﻿// Ignore Spelling: SDM GQI DMS
-
-namespace Skyline.DataMiner.SDM.Registration
+﻿namespace Skyline.DataMiner.SDM.Registration
 {
 	using System;
 

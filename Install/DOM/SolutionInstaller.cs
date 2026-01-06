@@ -1,7 +1,7 @@
-﻿// Ignore Spelling: SDM Un
-
-namespace Skyline.DataMiner.SDM.Registration.Install.DOM
+﻿namespace Skyline.DataMiner.SDM.Registration.Install.DOM
 {
+	using System;
+
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel.Concatenation;
 	using Skyline.DataMiner.Net.Sections;
@@ -37,7 +37,7 @@ namespace Skyline.DataMiner.SDM.Registration.Install.DOM
 					.WithName("Default API Script Name")
 					.WithType(typeof(string))
 					.WithIsOptional(true)
-					.WithTooltip(""))
+					.WithTooltip(String.Empty))
 				.AddFieldDescriptor(new FieldDescriptorBuilder()
 					.WithID(SolutionRegistrationDomMapper.SolutionRegistrationProperties.DefaultApiEndpoint)
 					.WithName("Default API Endpoint")
