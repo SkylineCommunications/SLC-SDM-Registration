@@ -1,15 +1,22 @@
-﻿namespace Skyline.DataMiner.SDM.Registration.Install.DOM
+﻿namespace Skyline.DataMiner.SDM.Registration.Install.DOM.SolutionDefinition
 {
 	using System;
 
+	using Skyline.DataMiner.Net;
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel.Concatenation;
+	using Skyline.DataMiner.Net.Messages.SLDataGateway;
 	using Skyline.DataMiner.Net.Sections;
 	using Skyline.DataMiner.Utils.DOM.Builders;
 
-	public partial class DomInstaller
+	internal class SolutionRegistration_V1_0_1 : DomMigration
 	{
-		private void InstallSolution(DomHelper helper, Shared.Version existingVersion)
+		public SolutionRegistration_V1_0_1(IConnection connection, Action<string> logMethod = null)
+			: base(connection, ModelRegistrationDomMapper.ModuleId, logMethod)
+		{
+		}
+
+		public override void Migrate()
 		{
 			var solutionProperties = new SectionDefinitionBuilder()
 				.WithName(nameof(SolutionRegistrationDomMapper.SolutionRegistrationProperties))
@@ -51,24 +58,6 @@
 					.WithIsOptional(true)
 					.WithTooltip("The endpoint where a user should navigate to, to interact with the solution using an UI."))
 				.AddFieldDescriptor(new FieldDescriptorBuilder()
-					.WithID(SolutionRegistrationDomMapper.SolutionRegistrationProperties.VisualizationCreateEndpoint)
-					.WithName("Create Visualization Endpoint")
-					.WithType(typeof(string))
-					.WithIsOptional(true)
-					.WithTooltip("The endpoint to interact with the solution to create a new visualization using the REST API."))
-				.AddFieldDescriptor(new FieldDescriptorBuilder()
-					.WithID(SolutionRegistrationDomMapper.SolutionRegistrationProperties.VisualizationUpdateEndpoint)
-					.WithName("Update Visualization Endpoint")
-					.WithType(typeof(string))
-					.WithIsOptional(true)
-					.WithTooltip("The endpoint to interact with the solution to update a visualization using the REST API."))
-				.AddFieldDescriptor(new FieldDescriptorBuilder()
-					.WithID(SolutionRegistrationDomMapper.SolutionRegistrationProperties.VisualizationDeleteEndpoint)
-					.WithName("Delete Visualization Endpoint")
-					.WithType(typeof(string))
-					.WithIsOptional(true)
-					.WithTooltip("The endpoint to interact with the solution to delete a visualization using the REST API."))
-				.AddFieldDescriptor(new FieldDescriptorBuilder()
 					.WithID(SolutionRegistrationDomMapper.SolutionRegistrationProperties.UninstallScript)
 					.WithName("Un-Install Script")
 					.WithType(typeof(string))
@@ -84,12 +73,7 @@
 					.WithTooltip("Links to all of the models the solution exposes."))
 				.Build();
 
-			Import(
-				helper.SectionDefinitions,
-				SectionDefinitionExposers.ID.Equal(SolutionRegistrationDomMapper.SolutionRegistrationProperties.SectionDefinitionId),
-				solutionProperties,
-				existingVersion,
-				Constants.Solution.Version);
+			Import(SectionDefinitionExposers.ID.Equal(SolutionRegistrationDomMapper.SolutionRegistrationProperties.SectionDefinitionId), solutionProperties);
 			Log("Installed section definition for Solution Registration");
 
 			var solutionDefinition = new DomDefinitionBuilder()
@@ -113,12 +97,7 @@
 				},
 			};
 
-			Import(
-				helper.DomDefinitions,
-				DomDefinitionExposers.Id.Equal(SolutionRegistrationDomMapper.DomDefinitionId),
-				solutionDefinition,
-				existingVersion,
-				Constants.Solution.Version);
+			Import(DomDefinitionExposers.Id.Equal(SolutionRegistrationDomMapper.DomDefinitionId), solutionDefinition);
 			Log("Installed DOM definition for Solution Registration");
 		}
 	}

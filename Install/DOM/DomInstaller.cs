@@ -9,11 +9,22 @@
 	using Skyline.DataMiner.Net.ManagerStore;
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
 	using Skyline.DataMiner.Net.Sections;
+	using Skyline.DataMiner.SDM.Registration.Install.DOM.Module;
+	using Skyline.DataMiner.SDM.Registration.Install.DOM.Registration;
 	using Skyline.DataMiner.Utils.DOM.Builders;
 	using Skyline.DataMiner.Utils.DOM.Extensions;
 
-	public partial class DomInstaller
+	public class DomInstaller
 	{
+		private static readonly Shared.Version[] _versions = new[]
+		{
+			new Shared.Version(1, 0, 0),
+			new Shared.Version(1, 0, 1),
+			new Shared.Version(1, 0, 2),
+			new Shared.Version(1, 0, 3),
+			new Shared.Version(1, 1, 1),
+		};
+
 		private readonly IConnection _connection;
 		private readonly Action<string> _logMethod;
 
@@ -28,24 +39,25 @@
 			Log("Installation for SDM Registration started...");
 
 			var moduleHelper = new ModuleSettingsHelper(_connection.HandleMessages);
-			var moduleSettings = moduleHelper.ModuleSettings.Read(ModuleSettingsExposers.ModuleId.Equal(SolutionRegistrationDomMapper.ModuleId));
-			var moduleExist = moduleSettings.Count > 0;
-			if (!moduleExist)
-			{
-				// If something needs to change here then we need to make sure to handle upgrades as well.
-				Log("Installing Module Settings...");
-				var module = new DomModuleBuilder()
+			var moduleComparer = new ModuleSettingsComparer();
+			var moduleSettings = moduleHelper.ModuleSettings.Read(ModuleSettingsExposers.ModuleId.Equal(SolutionRegistrationDomMapper.ModuleId)).SingleOrDefault();
+			var module = new DomModuleBuilder()
 					.WithModuleId(SolutionRegistrationDomMapper.ModuleId)
 					.WithInformationEvents(false)
-					.WithHistory(false)
+					.WithHistory(true)
 					.Build();
 
+			// If the module settings differ import it
+			// The comparer is not exhaustive it only checks for the properties we care about
+			if (moduleComparer.Equals(moduleSettings, module))
+			{
+				Log("Installing Module Settings...");
 				Import(moduleHelper.ModuleSettings, ModuleSettingsExposers.ModuleId.Equal(SolutionRegistrationDomMapper.ModuleId), module);
 				Log("Installed Module Settings");
 			}
 
 			var domHelper = new DomHelper(_connection.HandleMessages, SolutionRegistrationDomMapper.ModuleId);
-			var solutionVersion = Shared.Version.FromString(
+			var currentVersion = Shared.Version.FromString(
 				domHelper.DomInstances
 				.Read(DomInstanceExposers.Id.Equal(Constants.Solution.Guid))
 				.FirstOrDefault()?
@@ -53,9 +65,23 @@
 					SolutionRegistrationDomMapper.SolutionRegistrationProperties.SectionDefinitionId,
 					SolutionRegistrationDomMapper.SolutionRegistrationProperties.Version)
 				.GetValue() ?? "0.0.0");
-			InstallSolution(domHelper, solutionVersion);
-			InstallModel(domHelper, solutionVersion);
-			RegisterSolution(domHelper);
+
+			var solutionInstaller = new SolutionInstaller(_connection, _logMethod);
+			var modelInstaller = new ModelInstaller(_connection, _logMethod);
+			var registrationInstaller = new RegistrationInstaller(_connection, _logMethod);
+			foreach (var version in _versions)
+			{
+				if (currentVersion >= version)
+				{
+					continue;
+				}
+
+				solutionInstaller.RunMigration(version);
+				modelInstaller.RunMigration(version);
+				registrationInstaller.RunMigration(version);
+
+				currentVersion = version;
+			}
 		}
 
 		internal void Log(string message)
@@ -75,50 +101,6 @@
 			else
 			{
 				crudHelperComponent.Create(dataType);
-			}
-		}
-
-		private static void Import<T>(ICrudHelperComponent<T> crudHelperComponent, FilterElement<T> equalityFilter, T dataType, Func<T, Shared.Version> versionSelector)
-			where T : DataType
-		{
-			var existing = crudHelperComponent.Read(equalityFilter);
-			if (existing.Count > 1)
-			{
-				throw new InvalidOperationException("Multiple instances found when only one was expected.");
-			}
-
-			if (existing.Count == 0)
-			{
-				crudHelperComponent.Create(dataType);
-				return;
-			}
-
-			var existingVersion = versionSelector(existing[0]);
-			var newVersion = versionSelector(dataType);
-			if (newVersion > existingVersion)
-			{
-				crudHelperComponent.Update(dataType);
-			}
-		}
-
-		private static void Import<T>(ICrudHelperComponent<T> crudHelperComponent, FilterElement<T> equalityFilter, T dataType, Shared.Version existingVersion, Shared.Version newVersion)
-			where T : DataType
-		{
-			var existing = crudHelperComponent.Read(equalityFilter);
-			if (existing.Count > 1)
-			{
-				throw new InvalidOperationException("Multiple instances found when only one was expected.");
-			}
-
-			if (existing.Count == 0)
-			{
-				crudHelperComponent.Create(dataType);
-				return;
-			}
-
-			if (newVersion > existingVersion)
-			{
-				crudHelperComponent.Update(dataType);
 			}
 		}
 	}
