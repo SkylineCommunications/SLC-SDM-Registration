@@ -150,7 +150,6 @@
 		public override string ToString()
 		{
 			return $"{Major}.{Minor}.{Patch}";
-
 		}
 	}
 }

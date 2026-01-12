@@ -19,39 +19,53 @@
 			_solutionProvider = solutionProvider ?? throw new ArgumentNullException(nameof(solutionProvider));
 		}
 
-		public void OnCreate(IEnumerable<ModelRegistration> oToCreate, Action<IEnumerable<ModelRegistration>> next)
+		public IReadOnlyCollection<ModelRegistration> OnCreate(IEnumerable<ModelRegistration> oToCreate, Func<IEnumerable<ModelRegistration>, IReadOnlyCollection<ModelRegistration>> next)
 		{
-			HandleModels(oToCreate, next);
+			return HandleModels(oToCreate, next);
 		}
 
-		public void OnCreate(ModelRegistration oToCreate, Action<ModelRegistration> next)
+		public ModelRegistration OnCreate(ModelRegistration oToCreate, Func<ModelRegistration, ModelRegistration> next)
 		{
-			HandleModel(oToCreate, next);
+			return HandleModel(oToCreate, next);
 		}
 
-		public void OnCreateOrUpdate(IEnumerable<ModelRegistration> oToCreateOrUpdate, Action<IEnumerable<ModelRegistration>> next)
+		public IReadOnlyCollection<ModelRegistration> OnCreateOrUpdate(IEnumerable<ModelRegistration> oToCreateOrUpdate, Func<IEnumerable<ModelRegistration>, IReadOnlyCollection<ModelRegistration>> next)
 		{
-			HandleModels(oToCreateOrUpdate, next);
+			return HandleModels(oToCreateOrUpdate, next);
 		}
 
 		public void OnDelete(IEnumerable<ModelRegistration> oToDelete, Action<IEnumerable<ModelRegistration>> next)
 		{
-			HandleModels(oToDelete, next, addition: false);
+			HandleModels(
+				oToDelete,
+				(input) =>
+				{
+					next(input);
+					return Array.Empty<ModelRegistration>();
+				},
+				addition: false);
 		}
 
 		public void OnDelete(ModelRegistration oToDelete, Action<ModelRegistration> next)
 		{
-			HandleModel(oToDelete, next, addition: false);
+			HandleModel(
+				oToDelete,
+				(input) =>
+				{
+					next(oToDelete);
+					return null;
+				},
+				addition: false);
 		}
 
-		public void OnUpdate(IEnumerable<ModelRegistration> oToUpdate, Action<IEnumerable<ModelRegistration>> next)
+		public IReadOnlyCollection<ModelRegistration> OnUpdate(IEnumerable<ModelRegistration> oToUpdate, Func<IEnumerable<ModelRegistration>, IReadOnlyCollection<ModelRegistration>> next)
 		{
-			HandleModels(oToUpdate, next);
+			return HandleModels(oToUpdate, next);
 		}
 
-		public void OnUpdate(ModelRegistration oToUpdate, Action<ModelRegistration> next)
+		public ModelRegistration OnUpdate(ModelRegistration oToUpdate, Func<ModelRegistration, ModelRegistration> next)
 		{
-			HandleModel(oToUpdate, next);
+			return HandleModel(oToUpdate, next);
 		}
 
 		#region Ignored
@@ -83,7 +97,7 @@
 		/// <exception cref="RegistrationNotFoundException">
 		/// Thrown when the associated solution registration cannot be found.
 		/// </exception>
-		private void HandleModel(ModelRegistration model, Action<ModelRegistration> next, bool addition = true)
+		private ModelRegistration HandleModel(ModelRegistration model, Func<ModelRegistration, ModelRegistration> next, bool addition = true)
 		{
 			// Fetch the solution
 			var solution = _solutionProvider
@@ -95,7 +109,7 @@
 			}
 
 			// Try to create the model
-			next(model);
+			var result = next(model);
 
 			// Add/remove the model to/from the solution
 			var solutionModels = solution.Models.ToList();
@@ -111,6 +125,7 @@
 			}
 
 			_solutionProvider.Update(solution);
+			return result;
 		}
 
 		/// <summary>
@@ -124,7 +139,7 @@
 		/// <exception cref="SdmBulkCrudException{ModelRegistration}">
 		/// Thrown when one or more models could not be processed due to missing solutions or update failures.
 		/// </exception>
-		private void HandleModels(IEnumerable<ModelRegistration> models, Action<IEnumerable<ModelRegistration>> next, bool addition = true)
+		private IReadOnlyCollection<ModelRegistration> HandleModels(IEnumerable<ModelRegistration> models, Func<IEnumerable<ModelRegistration>, IReadOnlyCollection<ModelRegistration>> next, bool addition = true)
 		{
 			// Fetch all the needed solutions
 			var solutionIds = models.Select(m => m.Solution).Distinct().ToList();
@@ -152,10 +167,11 @@
 			}
 
 			// Create the valid models
+			IReadOnlyCollection<ModelRegistration> result = Array.Empty<ModelRegistration>();
 			var validModels = models.Except(invalidModels).ToList();
 			try
 			{
-				next(validModels);
+				result = next(validModels);
 			}
 			catch (SdmBulkCrudException<ModelRegistration> ex)
 			{
@@ -208,6 +224,8 @@
 			{
 				throw exceptionBuilder.Build();
 			}
+
+			return result;
 		}
 	}
 }

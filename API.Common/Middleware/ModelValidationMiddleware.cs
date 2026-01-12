@@ -30,7 +30,7 @@
 			return next(query);
 		}
 
-		public void OnCreate(IEnumerable<ModelRegistration> oToCreate, Action<IEnumerable<ModelRegistration>> next)
+		public IReadOnlyCollection<ModelRegistration> OnCreate(IEnumerable<ModelRegistration> oToCreate, Func<IEnumerable<ModelRegistration>, IReadOnlyCollection<ModelRegistration>> next)
 		{
 			var builder = new ValidationResult.Builder();
 			foreach (var modelRegistration in oToCreate)
@@ -45,10 +45,10 @@
 				throw result.ToException();
 			}
 
-			next(oToCreate);
+			return next(oToCreate);
 		}
 
-		public void OnCreate(ModelRegistration oToCreate, Action<ModelRegistration> next)
+		public ModelRegistration OnCreate(ModelRegistration oToCreate, Func<ModelRegistration, ModelRegistration> next)
 		{
 			var result = Validate(oToCreate);
 			if (!result.IsValid)
@@ -56,10 +56,10 @@
 				throw result.ToException();
 			}
 
-			next(oToCreate);
+			return next(oToCreate);
 		}
 
-		public void OnCreateOrUpdate(IEnumerable<ModelRegistration> oToCreateOrUpdate, Action<IEnumerable<ModelRegistration>> next)
+		public IReadOnlyCollection<ModelRegistration> OnCreateOrUpdate(IEnumerable<ModelRegistration> oToCreateOrUpdate, Func<IEnumerable<ModelRegistration>, IReadOnlyCollection<ModelRegistration>> next)
 		{
 			var builder = new ValidationResult.Builder();
 			foreach (var modelRegistration in oToCreateOrUpdate)
@@ -74,7 +74,7 @@
 				throw result.ToException();
 			}
 
-			next(oToCreateOrUpdate);
+			return next(oToCreateOrUpdate);
 		}
 
 		public void OnDelete(IEnumerable<ModelRegistration> oToDelete, Action<IEnumerable<ModelRegistration>> next)
@@ -167,7 +167,7 @@
 			return next(query, pageSize);
 		}
 
-		public void OnUpdate(IEnumerable<ModelRegistration> oToUpdate, Action<IEnumerable<ModelRegistration>> next)
+		public IReadOnlyCollection<ModelRegistration> OnUpdate(IEnumerable<ModelRegistration> oToUpdate, Func<IEnumerable<ModelRegistration>, IReadOnlyCollection<ModelRegistration>> next)
 		{
 			var builder = new ValidationResult.Builder();
 			foreach (var link in oToUpdate)
@@ -182,10 +182,10 @@
 				throw result.ToException();
 			}
 
-			next(oToUpdate);
+			return next(oToUpdate);
 		}
 
-		public void OnUpdate(ModelRegistration oToUpdate, Action<ModelRegistration> next)
+		public ModelRegistration OnUpdate(ModelRegistration oToUpdate, Func<ModelRegistration, ModelRegistration> next)
 		{
 			var result = Validate(oToUpdate);
 			if (!result.IsValid)
@@ -193,7 +193,7 @@
 				throw result.ToException();
 			}
 
-			next(oToUpdate);
+			return next(oToUpdate);
 		}
 
 		private static ValidationEntry Validate(ModelRegistration modelRegistration)

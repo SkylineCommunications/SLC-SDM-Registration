@@ -30,7 +30,7 @@
 			return next(query);
 		}
 
-		public void OnCreate(IEnumerable<SolutionRegistration> oToCreate, Action<IEnumerable<SolutionRegistration>> next)
+		public IReadOnlyCollection<SolutionRegistration> OnCreate(IEnumerable<SolutionRegistration> oToCreate, Func<IEnumerable<SolutionRegistration>, IReadOnlyCollection<SolutionRegistration>> next)
 		{
 			var builder = new ValidationResult.Builder();
 			foreach (var solutionRegistration in oToCreate)
@@ -45,24 +45,24 @@
 				throw result.ToException();
 			}
 
-			next(oToCreate);
+			return next(oToCreate);
 		}
 
-		public void OnCreate(SolutionRegistration oToCreate, Action<SolutionRegistration> next)
+		public SolutionRegistration OnCreate(SolutionRegistration oToCreate, Func<SolutionRegistration, SolutionRegistration> next)
 		{
 			var result = Validate(oToCreate);
-			if(!result.IsValid)
+			if (!result.IsValid)
 			{
 				throw result.ToException();
 			}
 
-			next(oToCreate);
+			return next(oToCreate);
 		}
 
-		public void OnCreateOrUpdate(IEnumerable<SolutionRegistration> oToCreateOrUpdate, Action<IEnumerable<SolutionRegistration>> next)
+		public IReadOnlyCollection<SolutionRegistration> OnCreateOrUpdate(IEnumerable<SolutionRegistration> oToCreateOrUpdate, Func<IEnumerable<SolutionRegistration>, IReadOnlyCollection<SolutionRegistration>> next)
 		{
 			var builder = new ValidationResult.Builder();
-			foreach(var solutionRegistration in oToCreateOrUpdate)
+			foreach (var solutionRegistration in oToCreateOrUpdate)
 			{
 				var entry = Validate(solutionRegistration);
 				builder.Add(entry);
@@ -74,7 +74,7 @@
 				throw result.ToException();
 			}
 
-			next(oToCreateOrUpdate);
+			return next(oToCreateOrUpdate);
 		}
 
 		public void OnDelete(IEnumerable<SolutionRegistration> oToDelete, Action<IEnumerable<SolutionRegistration>> next)
@@ -167,7 +167,7 @@
 			return next(query, pageSize);
 		}
 
-		public void OnUpdate(IEnumerable<SolutionRegistration> oToUpdate, Action<IEnumerable<SolutionRegistration>> next)
+		public IReadOnlyCollection<SolutionRegistration> OnUpdate(IEnumerable<SolutionRegistration> oToUpdate, Func<IEnumerable<SolutionRegistration>, IReadOnlyCollection<SolutionRegistration>> next)
 		{
 			var builder = new ValidationResult.Builder();
 			foreach (var link in oToUpdate)
@@ -182,10 +182,10 @@
 				throw result.ToException();
 			}
 
-			next(oToUpdate);
+			return next(oToUpdate);
 		}
 
-		public void OnUpdate(SolutionRegistration oToUpdate, Action<SolutionRegistration> next)
+		public SolutionRegistration OnUpdate(SolutionRegistration oToUpdate, Func<SolutionRegistration, SolutionRegistration> next)
 		{
 			var result = Validate(oToUpdate);
 			if (!result.IsValid)
@@ -193,7 +193,7 @@
 				throw result.ToException();
 			}
 
-			next(oToUpdate);
+			return next(oToUpdate);
 		}
 
 		private static ValidationEntry Validate(SolutionRegistration solutionRegistration)

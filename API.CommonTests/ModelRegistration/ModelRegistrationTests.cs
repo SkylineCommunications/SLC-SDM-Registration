@@ -1,17 +1,12 @@
-﻿// Ignore Spelling: SDM
-
-namespace Skyline.DataMiner.SDM.Registration.Tests
+﻿namespace Skyline.DataMiner.SDM.Registration.Tests
 {
 	using FluentAssertions;
 
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
-	using Skyline.DataMiner.SDM.Linq;
 	using Skyline.DataMiner.SDM.Registration.Install.DOM;
 	using Skyline.DataMiner.Utils.DOM.Builders;
 	using Skyline.DataMiner.Utils.DOM.UnitTesting;
-
-	using SLDataGateway.API.Querying;
 
 	[TestClass]
 	public class ModelRegistrationTests
@@ -234,7 +229,7 @@ namespace Skyline.DataMiner.SDM.Registration.Tests
 				VisualizationEndpoint = "https://localhost/app/e3210645-842d-49e5-bb4d-905e69a67cf3",
 				Version = "1.0.1",
 			};
-			registrar.RegisterSolution(solution);
+			registrar.Solutions.Create(solution);
 
 			// Act
 			var models1 = new List<ModelRegistration>
