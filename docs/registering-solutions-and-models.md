@@ -31,12 +31,12 @@ public OnInitOutputArgs OnInit(OnInitInputArgs args)
 }
 ```
 
-## Registering a Solution
+## Registering a new Solution
 
 After you have you're registrar you can start registering your solution and models:
 
 > [!IMPORTANT]
-> The solution should always be registered first, before adding modules. You cannot have a lingering model. You can use the registrar.`RegisterSolution(SolutionRegistration, IEnumerable<ModelRegistration>)` to register the solution and it's models all in 1 call.
+> The solution should always be registered first, before adding models. You cannot have a lingering model.
 
 
 ```csharp
@@ -50,7 +50,7 @@ var solution = new SolutionRegistration
     /* Optional */  VisualizationEndpoint = "/app/e3210645-842d-49e5-bb4d-905e69a67cf3",
 };
 
-registrar.RegisterSolution(solution);
+registrar.Solutions.Create(solution);
 
 var model1 = new  
 { 
@@ -63,6 +63,42 @@ var model1 = new
     /* Required */  Solution = solution,
 };
 
-registrar.RegisterModels(model1);
+registrar.Models.Create(model1);
+
+```
+
+## Updating an existing Solution
+
+After you have you're registrar you can start registering your solution and models:
+
+> [!IMPORTANT]
+> The solution should always be registered first, before adding models. You cannot have a lingering model.
+
+
+```csharp
+var solution = new SolutionRegistration 
+{ 
+    /* Required */  ID = "my_solution", 
+    /* Required */  DisplayName = "My Solution", 
+    /* Required */  Version = "1.0.1",
+    /* Optional */  DefaultApiEndpoint = "/api/custom/my_solution",
+    /* Optional */  DefaultApiScriptName = "MySolution.CRUD",
+    /* Optional */  VisualizationEndpoint = "/app/e3210645-842d-49e5-bb4d-905e69a67cf3",
+};
+
+registrar.Solutions.Update(solution);
+
+var model1 = new  
+{ 
+    /* Required */  Name = "model1", 
+    /* Required */  DisplayName = "Model 1", 
+    /* Required */  Version = "1.0.1", 
+    /* Optional */  ApiScriptName = "MySolution.Model1.CRUD", 
+    /* Optional */  ApiEndpoint = "/api/custom/my_solution/model1", 
+    /* Optional */  VisualizationEndpoint = "/app/e3210645-842d-49e5-bb4d-905e69a67cf3/MyModel%20Overview", 
+    /* Required */  Solution = solution,
+};
+
+registrar.Models.Update(model1);
 
 ```

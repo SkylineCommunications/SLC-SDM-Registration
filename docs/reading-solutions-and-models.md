@@ -36,11 +36,11 @@ public OnInitOutputArgs OnInit(OnInitInputArgs args)
 You can retrieve a solution by its ID, GUID or any form of custom filters:
 
 ```csharp
-// Automation Script, read by Guid
+// Automation Script, read by id
 public void Run(IEngine engine)
 {
     var registrar = engine.GetSdmRegistrar();
-    var solution = registrar.GetSolutionByGuid(new Guid("d446042a-6217-44a4-be2e-6ac1e5803947"));
+    var solution = registrar.Solutions.GetSolutionById("standard_data_model_abstractions");
 
     engine.Log($"{solution.DisplayName} has version {solution.Version}");
 }
@@ -49,7 +49,7 @@ public void Run(IEngine engine)
 public static void Run(SLProtocol protocol)
 {
     var registrar = protocol.GetSdmRegistrar();
-    var solution = registrar.GetSolutionById("my_solution");
+    var solution = registrar.Solutions.GetSolutionById("standard_data_model_registrations");
 
     protocol.Log($"{solution.DisplayName} has version {solution.Version}");
 }
@@ -75,7 +75,7 @@ You can retrieve a models by its Guid, Name, Solution or any form of custom filt
 public void Run(IEngine engine)
 {
     var registrar = engine.GetSdmRegistrar();
-    var model = registrar.GetModelByName("my_model");
+    var model = registrar.Models.GetModelByName("my_model");
 
     engine.Log($"{model.DisplayName} has version {model.Version}");
 }
@@ -84,9 +84,16 @@ public void Run(IEngine engine)
 public static void Run(SLProtocol protocol)
 {
     var registrar = protocol.GetSdmRegistrar();
-    var models = registrar.GetModelsBySolution("my_solution");
+    
+    // By reference 
+    var solutionRef = new SdmObjectReference<SolutionRegistration>(new Guid("00000000-0000-0000-0000-000000000000"));
+    var modelsByRef = registrar.Models.GetModelsBySolution(solutionRef);
 
-    foreach(var model in model)
+    // By object
+    var solution = registrar.Solutions.GetSolutionById("standard_data_model_registrations");
+    var models = registrar.Models.GetModelsBySolution(solution);
+
+    foreach(var model in models)
     {
         protocol.Log($"{model.DisplayName} has version {model.Version}");
     }
@@ -96,7 +103,7 @@ public static void Run(SLProtocol protocol)
 public OnInitOutputArgs OnInit(OnInitInputArgs args)
 {
 	var registrar = args.DMS.GetSdmRegistrar();
-    var solution = registrar.GetSolutionById("my_solutions");
+    var solution = registrar.Solutions.GetSolutionById("my_solutions");
     var models = registrar.Models.Read(
         new ORFilterElement<ModelRegistration>(
 				ModelRegistrationExposers.Solution.Equal(solution),
