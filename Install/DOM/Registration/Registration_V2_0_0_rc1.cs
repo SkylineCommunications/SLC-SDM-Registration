@@ -9,9 +9,9 @@
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
 	using Skyline.DataMiner.Utils.DOM.Builders;
 
-	internal class Registration_V1_1_1 : DomMigration
+	internal class Registration_V2_0_0_rc1 : DomMigration
 	{
-		public Registration_V1_1_1(IConnection connection, Action<string> logMethod = null)
+		public Registration_V2_0_0_rc1(IConnection connection, Action<string> logMethod = null)
 			: base(connection, ModelRegistrationDomMapper.ModuleId, logMethod)
 		{
 		}
@@ -25,7 +25,7 @@
 				.WithFieldValue(
 					SolutionRegistrationDomMapper.SolutionRegistrationProperties.SectionDefinitionId,
 					SolutionRegistrationDomMapper.SolutionRegistrationProperties.Version,
-					new SdmVersion(1, 1, 1).ToString())
+					new SdmVersion(2, 0, 0, null, "rc1").ToString())
 				.Build();
 
 			Import(solutionEquality, updatedSolutionInstance);
