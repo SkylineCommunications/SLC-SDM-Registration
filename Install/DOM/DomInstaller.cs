@@ -51,7 +51,7 @@
 
 			// If the module settings differ import it
 			// The comparer is not exhaustive it only checks for the properties we care about
-			if (moduleComparer.Equals(moduleSettings, module))
+			if (!moduleComparer.Equals(moduleSettings, module))
 			{
 				Log("Installing Module Settings...");
 				Import(moduleHelper.ModuleSettings, ModuleSettingsExposers.ModuleId.Equal(SolutionRegistrationDomMapper.ModuleId), module);
