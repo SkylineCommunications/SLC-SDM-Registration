@@ -1,14 +1,13 @@
 ﻿namespace Skyline.DataMiner.SDM.Registration.Install.DOM.Registration
 {
 	using System;
-	using System.Collections.Generic;
-	using System.Linq;
+
+	using Shared;
 
 	using Skyline.DataMiner.Net;
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
 	using Skyline.DataMiner.Utils.DOM.Builders;
-	using Skyline.DataMiner.Utils.DOM.Extensions;
 
 	internal class Registration_V1_0_2 : DomMigration
 	{
@@ -26,19 +25,7 @@
 				.WithFieldValue(
 					SolutionRegistrationDomMapper.SolutionRegistrationProperties.SectionDefinitionId,
 					SolutionRegistrationDomMapper.SolutionRegistrationProperties.Version,
-					new Shared.Version(1, 0, 2).ToString())
-				.WithFieldValue(
-					SolutionRegistrationDomMapper.SolutionRegistrationProperties.SectionDefinitionId,
-					SolutionRegistrationDomMapper.SolutionRegistrationProperties.VisualizationCreateEndpoint,
-					String.Empty)
-				.WithFieldValue(
-					SolutionRegistrationDomMapper.SolutionRegistrationProperties.SectionDefinitionId,
-					SolutionRegistrationDomMapper.SolutionRegistrationProperties.VisualizationUpdateEndpoint,
-					String.Empty)
-				.WithFieldValue(
-					SolutionRegistrationDomMapper.SolutionRegistrationProperties.SectionDefinitionId,
-					SolutionRegistrationDomMapper.SolutionRegistrationProperties.VisualizationDeleteEndpoint,
-					String.Empty)
+					new SdmVersion(1, 0, 2).ToString())
 				.Build();
 
 			Import(solutionEquality, updatedSolutionInstance);
@@ -50,19 +37,7 @@
 				.WithFieldValue(
 					ModelRegistrationDomMapper.ModelRegistrationProperties.SectionDefinitionId,
 					ModelRegistrationDomMapper.ModelRegistrationProperties.Version,
-					new Shared.Version(1, 0, 2).ToString())
-				.WithFieldValue(
-					ModelRegistrationDomMapper.ModelRegistrationProperties.SectionDefinitionId,
-					ModelRegistrationDomMapper.ModelRegistrationProperties.VisualizationCreateEndpoint,
-					String.Empty)
-				.WithFieldValue(
-					ModelRegistrationDomMapper.ModelRegistrationProperties.SectionDefinitionId,
-					ModelRegistrationDomMapper.ModelRegistrationProperties.VisualizationUpdateEndpoint,
-					String.Empty)
-				.WithFieldValue(
-					ModelRegistrationDomMapper.ModelRegistrationProperties.SectionDefinitionId,
-					ModelRegistrationDomMapper.ModelRegistrationProperties.VisualizationDeleteEndpoint,
-					String.Empty)
+					new SdmVersion(1, 0, 2).ToString())
 				.Build();
 
 			Import(modelRegistrationEquality, updatedModelRegistrationInstance);
@@ -74,19 +49,7 @@
 				.WithFieldValue(
 					ModelRegistrationDomMapper.ModelRegistrationProperties.SectionDefinitionId,
 					ModelRegistrationDomMapper.ModelRegistrationProperties.Version,
-					new Shared.Version(1, 0, 2).ToString())
-				.WithFieldValue(
-					ModelRegistrationDomMapper.ModelRegistrationProperties.SectionDefinitionId,
-					ModelRegistrationDomMapper.ModelRegistrationProperties.VisualizationCreateEndpoint,
-					String.Empty)
-				.WithFieldValue(
-					ModelRegistrationDomMapper.ModelRegistrationProperties.SectionDefinitionId,
-					ModelRegistrationDomMapper.ModelRegistrationProperties.VisualizationUpdateEndpoint,
-					String.Empty)
-				.WithFieldValue(
-					ModelRegistrationDomMapper.ModelRegistrationProperties.SectionDefinitionId,
-					ModelRegistrationDomMapper.ModelRegistrationProperties.VisualizationDeleteEndpoint,
-					String.Empty)
+					new SdmVersion(1, 0, 2).ToString())
 				.Build();
 
 			Import(solutionRegistrationEquality, updatedSolutionRegistrationInstance);

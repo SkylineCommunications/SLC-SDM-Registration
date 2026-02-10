@@ -3,6 +3,8 @@
 	using System;
 	using System.Collections.Generic;
 
+	using Shared;
+
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
 	using Skyline.DataMiner.SDM.Registration.Validation;
 
@@ -223,6 +225,15 @@
 			if (modelRegistration.Solution == default)
 			{
 				entry.Exceptions.Add(new ArgumentException("ModelRegistration Solution cannot be null or empty.", nameof(modelRegistration)));
+			}
+
+			try
+			{
+				SdmVersion.FromString(modelRegistration.Version);
+			}
+			catch (Exception ex)
+			{
+				entry.Exceptions.Add(ex);
 			}
 
 			return entry;

@@ -3,6 +3,8 @@
 	using System;
 	using System.Collections.Generic;
 
+	using Shared;
+
 	using Skyline.DataMiner.Net;
 	using Skyline.DataMiner.SDM.Registration.Install.DOM.SolutionDefinition;
 
@@ -12,10 +14,10 @@
 			: base(
 				  connection,
 				  ModelRegistrationDomMapper.ModuleId,
-				  new Dictionary<Shared.Version, DomMigration>
+				  new Dictionary<SdmVersion, DomMigration>
 				  {
-					  [new Shared.Version(1, 0, 1)] = new SolutionRegistration_V1_0_1(connection, logMethod),
-					  [new Shared.Version(1, 0, 2)] = new SolutionRegistration_V1_0_2(connection, logMethod),
+					  [new SdmVersion(1, 0, 1)] = new SolutionRegistration_V1_0_1(connection, logMethod),
+					  [new SdmVersion(1, 0, 2)] = new SolutionRegistration_V1_0_2(connection, logMethod),
 				  },
 				  logMethod)
 		{

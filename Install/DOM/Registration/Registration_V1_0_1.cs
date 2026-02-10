@@ -3,6 +3,8 @@
 	using System;
 	using System.Collections.Generic;
 
+	using Shared;
+
 	using Skyline.DataMiner.Net;
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
@@ -28,11 +30,7 @@
 					.WithSectionDefinitionID(SolutionRegistrationDomMapper.SolutionRegistrationProperties.SectionDefinitionId)
 					.WithFieldValue(SolutionRegistrationDomMapper.SolutionRegistrationProperties.ID, Constants.Solution.ID)
 					.WithFieldValue(SolutionRegistrationDomMapper.SolutionRegistrationProperties.DisplayName, Constants.Solution.DisplayName)
-					.WithFieldValue(SolutionRegistrationDomMapper.SolutionRegistrationProperties.Version, new Shared.Version(1, 0, 1).ToString())
-					.WithFieldValue(SolutionRegistrationDomMapper.SolutionRegistrationProperties.DefaultApiScriptName, String.Empty)
-					.WithFieldValue(SolutionRegistrationDomMapper.SolutionRegistrationProperties.DefaultApiEndpoint, String.Empty)
-					.WithFieldValue(SolutionRegistrationDomMapper.SolutionRegistrationProperties.VisualizationEndpoint, String.Empty)
-					.WithFieldValue(SolutionRegistrationDomMapper.SolutionRegistrationProperties.UninstallScript, String.Empty)
+					.WithFieldValue(SolutionRegistrationDomMapper.SolutionRegistrationProperties.Version, new SdmVersion(1, 0, 1).ToString())
 					.WithFieldValue(SolutionRegistrationDomMapper.SolutionRegistrationProperties.Models, new List<Guid>
 					{
 						Constants.Models.ModelRegistration.Guid,
@@ -54,10 +52,7 @@
 					.WithSectionDefinitionID(ModelRegistrationDomMapper.ModelRegistrationProperties.SectionDefinitionId)
 					.WithFieldValue(ModelRegistrationDomMapper.ModelRegistrationProperties.Name, Constants.Models.ModelRegistration.Name)
 					.WithFieldValue(ModelRegistrationDomMapper.ModelRegistrationProperties.DisplayName, Constants.Models.ModelRegistration.DisplayName)
-					.WithFieldValue(ModelRegistrationDomMapper.ModelRegistrationProperties.Version, new Shared.Version(1, 0, 1).ToString())
-					.WithFieldValue(ModelRegistrationDomMapper.ModelRegistrationProperties.ApiScriptName, String.Empty)
-					.WithFieldValue(ModelRegistrationDomMapper.ModelRegistrationProperties.ApiEndpoint, String.Empty)
-					.WithFieldValue(ModelRegistrationDomMapper.ModelRegistrationProperties.VisualizationEndpoint, String.Empty)
+					.WithFieldValue(ModelRegistrationDomMapper.ModelRegistrationProperties.Version, new SdmVersion(1, 0, 1).ToString())
 					.WithFieldValue(ModelRegistrationDomMapper.ModelRegistrationProperties.Solution, Constants.Solution.Guid))
 				.Build();
 
@@ -75,10 +70,7 @@
 					.WithSectionDefinitionID(ModelRegistrationDomMapper.ModelRegistrationProperties.SectionDefinitionId)
 					.WithFieldValue(ModelRegistrationDomMapper.ModelRegistrationProperties.Name, Constants.Models.SolutionRegistration.Name)
 					.WithFieldValue(ModelRegistrationDomMapper.ModelRegistrationProperties.DisplayName, Constants.Models.SolutionRegistration.DisplayName)
-					.WithFieldValue(ModelRegistrationDomMapper.ModelRegistrationProperties.Version, new Shared.Version(1, 0, 1).ToString())
-					.WithFieldValue(ModelRegistrationDomMapper.ModelRegistrationProperties.ApiScriptName, String.Empty)
-					.WithFieldValue(ModelRegistrationDomMapper.ModelRegistrationProperties.ApiEndpoint, String.Empty)
-					.WithFieldValue(ModelRegistrationDomMapper.ModelRegistrationProperties.VisualizationEndpoint, String.Empty)
+					.WithFieldValue(ModelRegistrationDomMapper.ModelRegistrationProperties.Version, new SdmVersion(1, 0, 1).ToString())
 					.WithFieldValue(ModelRegistrationDomMapper.ModelRegistrationProperties.Solution, Constants.Solution.Guid))
 				.Build();
 

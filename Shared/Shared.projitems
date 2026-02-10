@@ -11,6 +11,6 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Maps\ModelRegistrationDomMapper.g.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Maps\SolutionRegistrationDomMapper.g.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Version.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SdmVersion.cs" />
   </ItemGroup>
 </Project>

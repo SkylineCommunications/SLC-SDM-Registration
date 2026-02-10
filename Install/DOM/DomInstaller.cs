@@ -3,6 +3,8 @@
 	using System;
 	using System.Linq;
 
+	using Shared;
+
 	using Skyline.DataMiner.Net;
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
 	using Skyline.DataMiner.Net.Apps.Modules;
@@ -16,13 +18,13 @@
 
 	public class DomInstaller
 	{
-		private static readonly Shared.Version[] _versions = new[]
+		private static readonly SdmVersion[] _versions = new[]
 		{
-			new Shared.Version(1, 0, 0),
-			new Shared.Version(1, 0, 1),
-			new Shared.Version(1, 0, 2),
-			new Shared.Version(1, 0, 3),
-			new Shared.Version(1, 1, 1),
+			new SdmVersion(1, 0, 0),
+			new SdmVersion(1, 0, 1),
+			new SdmVersion(1, 0, 2),
+			new SdmVersion(1, 0, 3),
+			new SdmVersion(1, 1, 1),
 		};
 
 		private readonly IConnection _connection;
@@ -57,14 +59,18 @@
 			}
 
 			var domHelper = new DomHelper(_connection.HandleMessages, SolutionRegistrationDomMapper.ModuleId);
-			var currentVersion = Shared.Version.FromString(
-				domHelper.DomInstances
-				.Read(DomInstanceExposers.Id.Equal(Constants.Solution.Guid))
-				.FirstOrDefault()?
-				.GetFieldValue<string>(
-					SolutionRegistrationDomMapper.SolutionRegistrationProperties.SectionDefinitionId,
-					SolutionRegistrationDomMapper.SolutionRegistrationProperties.Version)
-				.GetValue() ?? "0.0.0");
+			var currentVersion = new SdmVersion(0, 0, 0);
+			if (SdmVersion.TryParse(
+					domHelper.DomInstances
+					.Read(DomInstanceExposers.Id.Equal(Constants.Solution.Guid))
+					.FirstOrDefault()?
+					.GetFieldValue<string>(
+						SolutionRegistrationDomMapper.SolutionRegistrationProperties.SectionDefinitionId,
+						SolutionRegistrationDomMapper.SolutionRegistrationProperties.Version)
+					.GetValue(), out var v))
+			{
+				currentVersion = v;
+			}
 
 			var solutionInstaller = new SolutionInstaller(_connection, _logMethod);
 			var modelInstaller = new ModelInstaller(_connection, _logMethod);
@@ -81,6 +87,34 @@
 				registrationInstaller.RunMigration(version);
 
 				currentVersion = version;
+			}
+
+			// Check the version of the abstractions devpack solution, if it's not present it will be installed, if it's an older version it will be updated
+			var currentAbstractionsVersion = new SdmVersion(0, 0, 0);
+			if (SdmVersion.TryParse(
+					domHelper.DomInstances
+					.Read(DomInstanceExposers.Id.Equal(Guid.Parse(AbstractionsInstaller.Guid)))
+					.FirstOrDefault()?
+					.GetFieldValue<string>(
+						SolutionRegistrationDomMapper.SolutionRegistrationProperties.SectionDefinitionId,
+						SolutionRegistrationDomMapper.SolutionRegistrationProperties.Version)
+					.GetValue(), out var abstractionVersion))
+			{
+				currentAbstractionsVersion = abstractionVersion;
+			}
+
+			// Register the abstractions devpack solution
+			var abstractionInstallers = new AbstractionsInstaller(_connection, _logMethod);
+			foreach (var version in abstractionInstallers.Versions)
+			{
+				if (currentAbstractionsVersion >= version)
+				{
+					continue;
+				}
+
+				abstractionInstallers.RunMigration(version);
+
+				currentAbstractionsVersion = version;
 			}
 		}
 

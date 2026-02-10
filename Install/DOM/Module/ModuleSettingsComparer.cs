@@ -26,7 +26,6 @@
 			return x.ModuleId == y.ModuleId &&
 				x.DomManagerSettings.InformationEventSettings.Enable == y.DomManagerSettings.InformationEventSettings.Enable &&
 				x.DomManagerSettings.DomInstanceHistorySettings.StorageBehavior == y.DomManagerSettings.DomInstanceHistorySettings.StorageBehavior;
-
 		}
 
 		public int GetHashCode(ModuleSettings obj)

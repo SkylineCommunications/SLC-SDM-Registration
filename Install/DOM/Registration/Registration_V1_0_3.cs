@@ -1,14 +1,13 @@
 ﻿namespace Skyline.DataMiner.SDM.Registration.Install.DOM.Registration
 {
 	using System;
-	using System.Collections.Generic;
-	using System.Linq;
+
+	using Shared;
 
 	using Skyline.DataMiner.Net;
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
 	using Skyline.DataMiner.Utils.DOM.Builders;
-	using Skyline.DataMiner.Utils.DOM.Extensions;
 
 	internal class Registration_V1_0_3 : DomMigration
 	{
@@ -26,7 +25,7 @@
 				.WithFieldValue(
 					SolutionRegistrationDomMapper.SolutionRegistrationProperties.SectionDefinitionId,
 					SolutionRegistrationDomMapper.SolutionRegistrationProperties.Version,
-					new Shared.Version(1, 0, 3).ToString())
+					new SdmVersion(1, 0, 3).ToString())
 				.Build();
 
 			Import(solutionEquality, updatedSolutionInstance);

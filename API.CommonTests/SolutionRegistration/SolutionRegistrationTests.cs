@@ -1,6 +1,4 @@
-﻿// Ignore Spelling: SDM Api
-
-namespace Skyline.DataMiner.SDM.Registration.Tests
+﻿namespace Skyline.DataMiner.SDM.Registration.Tests
 {
 	using FluentAssertions;
 

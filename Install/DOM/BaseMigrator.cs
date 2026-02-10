@@ -2,34 +2,34 @@
 {
 	using System;
 	using System.Collections.Generic;
-	using System.Linq;
+
+	using Shared;
 
 	using Skyline.DataMiner.Net;
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
-	using Skyline.DataMiner.Net.Messages.SLDataGateway;
-	using Skyline.DataMiner.Net.Sections;
-	using Skyline.DataMiner.Utils.DOM.Extensions;
 
 	internal abstract class BaseMigrator
 	{
 		private readonly DomHelper _helper;
 		private readonly Action<string> _logMethod;
-		private readonly IDictionary<Shared.Version, DomMigration> _migrations;
+		private readonly IDictionary<SdmVersion, DomMigration> _migrations;
 
 		protected BaseMigrator(
 			IConnection connection,
 			string moduleId,
-			IDictionary<Shared.Version, DomMigration> migrations = null,
+			IDictionary<SdmVersion, DomMigration> migrations = null,
 			Action<string> logMethod = null)
 		{
 			_helper = new DomHelper(connection.HandleMessages, moduleId);
 			_logMethod = logMethod;
-			_migrations = migrations ?? new Dictionary<Shared.Version, DomMigration>();
+			_migrations = migrations ?? new Dictionary<SdmVersion, DomMigration>();
 		}
 
 		public DomHelper Helper { get => _helper; }
 
-		public void RunMigration(Shared.Version version)
+		public IReadOnlyList<SdmVersion> Versions { get => _migrations.Keys as IReadOnlyList<SdmVersion> ?? new List<SdmVersion>(_migrations.Keys); }
+
+		public void RunMigration(SdmVersion version)
 		{
 			if (!_migrations.ContainsKey(version))
 			{
@@ -40,9 +40,9 @@
 			migration.Migrate();
 		}
 
-		////protected Shared.Version GetCurrentVersion()
+		////protected SdmVersion GetCurrentVersion()
 		////{
-		////	var currentVersion = Shared.Version.FromString(
+		////	var currentVersion = SdmVersion.FromString(
 		////		Helper.DomInstances
 		////		.Read(DomInstanceExposers.Id.Equal(Constants.Solution.Guid))
 		////		.FirstOrDefault()?

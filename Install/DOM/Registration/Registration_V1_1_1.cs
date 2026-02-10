@@ -2,6 +2,8 @@
 {
 	using System;
 
+	using Shared;
+
 	using Skyline.DataMiner.Net;
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
@@ -23,7 +25,7 @@
 				.WithFieldValue(
 					SolutionRegistrationDomMapper.SolutionRegistrationProperties.SectionDefinitionId,
 					SolutionRegistrationDomMapper.SolutionRegistrationProperties.Version,
-					new Shared.Version(1, 1, 1).ToString())
+					new SdmVersion(1, 1, 1).ToString())
 				.Build();
 
 			Import(solutionEquality, updatedSolutionInstance);

@@ -54,6 +54,7 @@ using System;
 using Skyline.AppInstaller;
 using Skyline.DataMiner.Automation;
 using Skyline.DataMiner.Net.AppPackages;
+using Skyline.DataMiner.SDM.Registration.Install.DevPack;
 using Skyline.DataMiner.SDM.Registration.Install.DOM;
 
 /// <summary>
@@ -75,6 +76,9 @@ public class Script
 			engine.GenerateInformation("Starting installation");
 			var installer = new AppInstaller(Engine.SLNetRaw, context);
 			installer.InstallDefaultContent();
+
+			var devPackInstaller = new DevPackInstaller(installer, engine);
+			devPackInstaller.DeployAllDevPacks();
 
 			var domInstaller = new DomInstaller(engine.GetUserConnection(), installer.Log);
 			domInstaller.InstallDefaultContent();
