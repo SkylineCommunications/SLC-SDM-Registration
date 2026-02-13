@@ -1,4 +1,4 @@
-﻿<Project Sdk="MSTest.Sdk/3.10.0">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net48</TargetFramework>
 		<PlatformTarget>x86</PlatformTarget>
@@ -10,9 +10,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="FluentAssertions" Version="7.2.0" />
-		<PackageReference Include="Moq" Version="4.18.4" />
-		<PackageReference Include="Skyline.DataMiner.Utils.DOM" Version="10.5.2.3" />
+		<PackageReference Include="FluentAssertions" />
+		<PackageReference Include="Moq" />
+		<PackageReference Include="MSTest.TestAdapter" />
+		<PackageReference Include="MSTest.TestFramework" />
+		<PackageReference Include="Skyline.DataMiner.Utils.DOM" />
 	</ItemGroup>
 
 	<ItemGroup>
