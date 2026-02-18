@@ -25,6 +25,8 @@
 			new SdmVersion(1, 0, 2),
 			new SdmVersion(1, 0, 3),
 			new SdmVersion(2, 0, 0, null, "rc1"),
+			new SdmVersion(2, 0, 0),
+			new SdmVersion(2, 0, 1),
 		};
 
 		private readonly IConnection _connection;
@@ -107,10 +109,11 @@
 			var abstractionInstallers = new AbstractionsInstaller(_connection, _logMethod);
 			foreach (var version in abstractionInstallers.Versions)
 			{
-				if (currentAbstractionsVersion >= version)
-				{
-					continue;
-				}
+				// Currently there is only 1 version
+				////if (currentAbstractionsVersion >= version)
+				////{
+				////	continue;
+				////}
 
 				abstractionInstallers.RunMigration(version);
 
