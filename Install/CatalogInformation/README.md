@@ -12,7 +12,7 @@ This solution serves as a central registry for that information. It comes with:
 A centralized registry of all installed DataMiner solutions opens the door to many possibilities, such as:
 - **Dependency Checks**: Before installing a new solution, you can check if the required dependencies are met.
 - **Version-Aware Migrations**: Detect if an older version of your solution is present and apply the right upgrade or data migration steps.
-- **Environment Auditing**: Get a complete overview of what�s installed on a system, making it easier to spot inconsistencies.
+- **Environment Auditing**: Get a complete overview of what's installed on a system, making it easier to spot inconsistencies.
 - **Upgrade Planning**: Identify outdated solutions that need upgrading, helping you schedule and prioritize updates.
 - **Troubleshooting**: Quickly confirm if a reported issue might be linked to a missing or incompatible solution version.
 
