@@ -69,5 +69,5 @@ owners:
 #   Cannot contain newlines.
 #   Cannot contain leading or trailing whitespace characters.
 tags:
-  - dataminer
   - Standard Data Model
+  - Registration
