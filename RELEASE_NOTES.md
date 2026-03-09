@@ -1,3 +1,17 @@
+# Release Notes - v2.0.4
+
+### What's Changed
+
+This release includes general maintenance updates and stability improvements.
+
+**Updates:**
+
+- Minor fixes and internal improvements
+- Dependency and package maintenance
+- Documentation touch-ups
+
+---
+
 # Release Notes - v2.0.3
 
 ### What's Changed
