@@ -19,6 +19,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+  	<PackageReference Include="Newtonsoft.Json" />
 		<PackageReference Include="Skyline.DataMiner.Core.AppPackageInstaller" />
 		<PackageReference Include="Skyline.DataMiner.Dev.Automation" />
 		<PackageReference Include="Skyline.DataMiner.SDM.SourceGenerator.Runtime" />
