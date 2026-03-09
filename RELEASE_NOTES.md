@@ -1,3 +1,34 @@
+# Release Notes - v2.0.3
+
+### What's Changed
+
+This release includes general maintenance updates and stability improvements.
+
+**Updates:**
+
+- Minor fixes and internal improvements
+- Dependency and package maintenance
+- Documentation touch-ups
+
+---
+
+# Release Notes - v2.0.2
+
+### What's Changed
+
+This maintenance release standardizes solution identification and improves package management.
+
+**Updates:**
+
+- **Solution ID Standardization**: Solution IDs now follow the new standard format using the catalog GUID as the identifier
+  - This ensures consistent identification across all DataMiner solutions
+  - Improves compatibility with the DataMiner Catalog
+- **Central Package Management (CPM)**: Migrated all NuGet package references to use CPM
+  - Simplifies dependency management across the solution
+  - Ensures consistent package versions across all projects
+
+---
+
 # Release Notes - v2.0.1
 
 ### What's Changed
