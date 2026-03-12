@@ -3,8 +3,10 @@
 	using System;
 	using System.Collections.Generic;
 	using System.IO;
+	using System.ServiceProcess;
 
 	using Skyline.AppInstaller;
+	using Skyline.ArtifactInstaller;
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Net.Automation.Messages.Requests;
 	using Skyline.DataMiner.Utils.SecureCoding.SecureIO;
@@ -12,6 +14,7 @@
 	internal class DevPackInstaller
 	{
 		public const string DevPackNamePrefix = "Skyline.DataMiner.Dev.Utils.";
+		private const string DataMinerGqiServiceName = "DataMiner GQI";
 
 		public DevPackInstaller(AppInstaller installer, IEngine engine)
 		{
@@ -60,6 +63,7 @@
 
 		public void DeployAllDevPacks()
 		{
+			var stoppedGqiService = StopDataMinerGQI();
 			var devPackNames = GetAvailableDevPacks();
 
 			foreach (var devPackName in devPackNames)
@@ -72,9 +76,27 @@
 
 				DeployDevPack(devPackName);
 			}
+
+			StartDataMinerGQI(stoppedGqiService);
 		}
 
-		public void DeployDevPack(string devPackName, bool skipIfInstalled = false)
+		private static bool IsValidDevPackName(string devPackName)
+		{
+			return !String.IsNullOrWhiteSpace(devPackName) &&
+				devPackName.StartsWith(DevPackNamePrefix, StringComparison.OrdinalIgnoreCase);
+		}
+
+		private static string GetDevPackShortName(string devPackName)
+		{
+			if (!IsValidDevPackName(devPackName))
+			{
+				throw new InvalidOperationException($"DevPack name '{devPackName}' is invalid. It must start with '{DevPackNamePrefix}'.");
+			}
+
+			return devPackName.Substring(DevPackNamePrefix.Length);
+		}
+
+		private void DeployDevPack(string devPackName, bool skipIfInstalled = false)
 		{
 			if (!IsValidDevPackName(devPackName))
 			{
@@ -119,24 +141,45 @@
 			}
 		}
 
-		private bool IsValidDevPackName(string devPackName)
+		private ServiceController StopDataMinerGQI()
 		{
-			return !String.IsNullOrWhiteSpace(devPackName) &&
-				devPackName.StartsWith(DevPackNamePrefix, StringComparison.OrdinalIgnoreCase);
-		}
-
-		/// <summary>
-		/// The path within the SolutionLibraries folder where the DevPack will be stored.
-		/// This removes the "Skyline.DataMiner.Dev.Utils." prefix from the DevPack name.
-		/// </summary>
-		private string GetDevPackShortName(string devPackName)
-		{
-			if (!IsValidDevPackName(devPackName))
+			ServiceController service = new ServiceController(DataMinerGqiServiceName);
+			try
 			{
-				throw new InvalidOperationException($"DevPack name '{devPackName}' is invalid. It must start with '{DevPackNamePrefix}'.");
+				service.Stop();
+				service.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(20));
+
+				Installer.Log("Successfully stopped DataMiner GQI service.");
+			}
+			catch (System.ServiceProcess.TimeoutException)
+			{
+				Installer.Log($"Timeout while waiting for DataMiner GQI service to stop");
+			}
+			catch (Exception e)
+			{
+				Installer.Log($"Failed to stop DataMiner GQI Service due to {e}");
 			}
 
-			return devPackName.Substring(DevPackNamePrefix.Length);
+			return service;
+		}
+
+		private void StartDataMinerGQI(ServiceController service)
+		{
+			try
+			{
+				service.Start();
+				service.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(20));
+
+				Installer.Log("Successfully started DataMiner GQI service.");
+			}
+			catch (System.ServiceProcess.TimeoutException)
+			{
+				Installer.Log($"Timeout while waiting for DataMiner GQI service to stop/start");
+			}
+			catch (Exception e)
+			{
+				Installer.Log($"Failed to start DataMiner GQI Service due to {e}");
+			}
 		}
 	}
 }
