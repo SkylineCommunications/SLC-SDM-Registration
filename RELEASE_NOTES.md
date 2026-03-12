@@ -1,3 +1,18 @@
+# Release Notes - v2.0.5
+
+### What's Changed
+
+This release fixes an installer issue when the GQI process locks the SDM.Abstractions DevPack.
+
+**Updates:**
+
+- **Installer Fix for Locked DevPack**: Updated installation flow for `SDM.Abstractions` DevPack when locked by GQI
+  - Stops the GQI service before installing the DevPack
+  - Installs the DevPack
+  - Restarts the GQI service after installation
+
+---
+
 # Release Notes - v2.0.4
 
 ### What's Changed
