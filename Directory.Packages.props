@@ -9,7 +9,8 @@
 		<PackageVersion Include="MSTest.TestAdapter" Version="3.10.5" />
 		<PackageVersion Include="MSTest.TestFramework" Version="3.10.5" />
 		<PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
-		<PackageVersion Include="Skyline.DataMiner.Core.AppPackageInstaller" Version="3.3.0" />
+		<PackageVersion Include="Skyline.DataMiner.Core.AppPackageInstaller" Version="4.0.0" />
+		<PackageVersion Include="Skyline.DataMiner.CICD.CSharpAnalysis.Analyzer" Version="2.1.2" />
 		<PackageVersion Include="Skyline.DataMiner.Dev.Automation" Version="10.5.9.2" />
 		<PackageVersion Include="Skyline.DataMiner.Dev.Common" Version="10.5.9.2" />
 		<PackageVersion Include="Skyline.DataMiner.Dev.Protocol" Version="10.5.9.2" />

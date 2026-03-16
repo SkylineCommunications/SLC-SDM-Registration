@@ -1,0 +1,24 @@
+<CatalogReferences xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.skyline.be/catalogReferences">
+<!--
+	<CatalogReference id="guid">
+		<Name>Example Catalog Item (Specific Version)</Name>
+		<Selection>
+			<Specific>1.0.0.1</Specific>
+		</Selection>
+	</CatalogReference>
+-->
+	<CatalogReference id="52173e49-9185-4772-9b60-c186ee365a81">
+		<Name>Standard Data Model Registration</Name>
+		<Selection>
+			<Range>2</Range>
+		</Selection>
+	</CatalogReference>
+<!--
+	<CatalogReference id="guid">
+		<Name>Example Catalog Item (Range - Prerelease)</Name>
+		<Selection>
+			<Range allowPrerelease="true">1.0.0</Range>
+		</Selection>
+	</CatalogReference>
+-->
+</CatalogReferences>
