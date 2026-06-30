@@ -1,27 +1,43 @@
 <Project>
+	<PropertyGroup>
+		<MinimumRequiredDmVersion>10.5.9.0 - 16293</MinimumRequiredDmVersion>
+		<RootDir>$(MSBuildThisFileDirectory)</RootDir>
+		<DevPackDir>$(MSBuildThisFileDirectory)</DevPackDir>
+		<PackageDir>$(MSBuildThisFileDirectory)</PackageDir>
+		<CodeAnalysisDir>$(MSBuildThisFileDirectory)Internal\Code Analysis</CodeAnalysisDir>
+		<SharedDir>$(MSBuildThisFileDirectory)</SharedDir>
+		<ArtifactDir>$(MSBuildThisFileDirectory)Artifacts</ArtifactDir>
+		<NugetDir>$(MSBuildThisFileDirectory)Artifacts\nuget</NugetDir>
+	</PropertyGroup>
+
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 		<DebugType>full</DebugType>
-		<CodeAnalysisRuleSet>..\Internal\Code Analysis\qaction-debug.ruleset</CodeAnalysisRuleSet>
+		<CodeAnalysisRuleSet>$(CodeAnalysisDir)\qaction-debug.ruleset</CodeAnalysisRuleSet>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
 		<DebugType>pdbonly</DebugType>
-		<CodeAnalysisRuleSet>..\Internal\Code Analysis\qaction-release.ruleset</CodeAnalysisRuleSet>
+		<CodeAnalysisRuleSet>$(CodeAnalysisDir)\qaction-release.ruleset</CodeAnalysisRuleSet>
 	</PropertyGroup>
+
 	<ItemGroup>
-		<AdditionalFiles Include="..\Internal\Code Analysis\stylecop.json">
+		<AdditionalFiles Include="$(CodeAnalysisDir)\stylecop.json">
 			<Link>Properties\stylecop.json</Link>
 		</AdditionalFiles>
-		<Content Include="..\.editorconfig">
+		<Content Include="$(RootDir)\.editorconfig">
 			<Link>Properties\.editorconfig</Link>
 		</Content>
-		<AdditionalFiles Include="..\allowed_words.dic">
+		<AdditionalFiles Include="$(RootDir)\allowed_words.dic">
 			<Link>Properties\allowed_words.dic</Link>
 		</AdditionalFiles>
 	</ItemGroup>
+
 	<ItemGroup>
 		<PackageReference Include="StyleCop.Analyzers">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 	</ItemGroup>
+
+	<!-- Can be used to set the location of your local nuget store to copy to -->
+	<Import Project="$(RootDir)\Directory.Build.props.user" Condition="Exists('$(RootDir)\Directory.Build.props.user')" />
 </Project>

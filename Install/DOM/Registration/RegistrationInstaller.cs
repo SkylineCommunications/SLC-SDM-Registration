@@ -25,6 +25,7 @@
 					  [new SdmVersion(2, 0, 3)] = new Registration_V2_0_3(connection, logMethod),
 					  [new SdmVersion(2, 0, 4)] = new Registration_V2_0_4(connection, logMethod),
 					  [new SdmVersion(2, 0, 5)] = new Registration_V2_0_5(connection, logMethod),
+					  [new SdmVersion(2, 1, 0)] = new Registration_V2_1_0(connection, logMethod),
 				  },
 				  logMethod)
 		{

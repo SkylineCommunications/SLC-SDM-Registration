@@ -18,7 +18,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\API.Common\Registration.Common.csproj" />
-		<ProjectReference Include="..\Install\Registration.Install.csproj" />
+		<ProjectReference Include="$(DevPackDir)\API.Common\Registration.Common.csproj" />
+		<ProjectReference Include="$(PackageDir)\Install\Registration.Install.csproj" />
 	</ItemGroup>
 </Project>
