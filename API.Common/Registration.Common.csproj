@@ -3,24 +3,32 @@
 	<PropertyGroup>
 		<TargetFramework>net48</TargetFramework>
 		<PlatformTarget>AnyCpu</PlatformTarget>
-		<ImplicitUsings>disable</ImplicitUsings>
-		<Nullable>disable</Nullable>
+		<LangVersion>latest</LangVersion>
+		<OutputType>Library</OutputType>
+		<AssemblyName>Skyline.DataMiner.SDM.Registration.Common</AssemblyName>
+		<Product>Skyline.DataMiner.SDM.Registration.Common</Product>
 		<AssemblyName>Skyline.DataMiner.SDM.Registration.Common</AssemblyName>
 		<RootNamespace>Skyline.DataMiner.SDM.Registration</RootNamespace>
-		<Version>2.0.5</Version>
+
+		<PackageId>Skyline.DataMiner.SDM.Registration.Common</PackageId>
 		<PackageTags>Skyline;DataMiner</PackageTags>
 		<PackageProjectUrl>https://skyline.be</PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<PackageIcon>Icon.png</PackageIcon>
+		<PackageOutputPath>$(NugetDir)</PackageOutputPath>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+
 		<Authors>SkylineCommunications</Authors>
 		<Company>Skyline Communications</Company>
 		<Description>Contains the helper classes and provider to register solutions and their models.</Description>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/SkylineCommunications/SLC-SDM-Registration</RepositoryUrl>
+		<Deterministic>false</Deterministic>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<Nullable>disable</Nullable>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -33,8 +41,14 @@
 		<PackageReference Include="Newtonsoft.Json" />
 		<PackageReference Include="Skyline.DataMiner.Dev.Common" />
 		<PackageReference Include="Skyline.DataMiner.SDM" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Skyline.DataMiner.Utils.SecureCoding.Analyzers">
 			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Skyline.DataMiner.CICD.CSharpAnalysis.Analyzer" >
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 	</ItemGroup>
@@ -47,12 +61,10 @@
 		<InternalsVisibleTo Include="Registration.Protocol" />
 	</ItemGroup>
 
-	<Import Project="..\Shared\Shared.projitems" Label="Shared" />
+	<Import Project="$(SharedDir)\Shared\Shared.projitems" Label="Shared" />
 
 	<!-- Can be used to set the location of your local nuget store to copy to -->
-	<Import Project="../Directory.Build.props.user" Condition="Exists('../Directory.Build.props.user')" />
-
 	<Target Name="CopyNuGetPackage" AfterTargets="Pack" Condition="'$(NuGetStorePath)' != '' and '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-		<Copy SourceFiles="$(OutputPath)..\$(PackageId).$(PackageVersion).nupkg" DestinationFolder="$(NuGetStorePath)\$(PackageId)" />
+		<Copy SourceFiles="$(PackageOutputPath)\$(PackageId).$(PackageVersion).nupkg" DestinationFolder="$(NuGetStorePath)\$(PackageId)" />
 	</Target>
 </Project>

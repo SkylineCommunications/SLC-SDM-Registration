@@ -10,7 +10,6 @@
 		<DataMinerType>Package</DataMinerType>
 		<GenerateDataMinerPackage>True</GenerateDataMinerPackage>
 		<MinimumRequiredDmVersion>10.5.9.0 - 16293</MinimumRequiredDmVersion>
-		<Version>2.0.5</Version>
 		<VersionComment>Initial Version</VersionComment>
 		<!-- Do NOT fill in the Organization Token here. This points to either an Environment Variable skyline__sdk__dataminertoken holding the organization token or a Visual Studio User Secret holding the token. -->
 		<CatalogPublishKeyName>skyline:sdk:dataminertoken</CatalogPublishKeyName>
@@ -25,15 +24,36 @@
 		<PackageReference Include="Skyline.DataMiner.SDM.SourceGenerator.Runtime" />
 		<PackageReference Include="Skyline.DataMiner.Utils.DOM" />
 		<PackageReference Include="Skyline.DataMiner.Utils.SecureCoding" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Skyline.DataMiner.Utils.SecureCoding.Analyzers">
 			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Skyline.DataMiner.CICD.CSharpAnalysis.Analyzer" >
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Reference Include="System.ServiceProcess" />
+		<Reference Include="System.ServiceProcess" />
 	</ItemGroup>
 
-	<Import Project="..\Shared\Shared.projitems" Label="Shared" />
+	<Import Project="$(SharedDir)\Shared\Shared.projitems" Label="Shared" />
+
+	<!-- Can be used to set the location of your local nuget store to copy to -->
+	<Target Name="CopyArtifacts" AfterTargets="DmappCreation" >
+		<ItemGroup>
+			<ArtifactFiles Include="$(OutputPath)DataMinerBuild\**\*" />
+		</ItemGroup>
+
+		<Message Importance="High" Text="OutputPath=$(OutputPath)" />
+		<Message Importance="High" Text="ArtifactDir=$(ArtifactDir)" />
+		<Message Importance="High" Text="Exists=$([System.IO.Directory]::Exists('$(OutputPath)DataMinerBuild'))" />
+
+		<Copy
+		  SourceFiles="@(ArtifactFiles)"
+		  DestinationFiles="@(ArtifactFiles->'$(ArtifactDir)\dataminer\$(PackageId)\%(RecursiveDir)%(Filename)%(Extension)')" />
+	</Target>
 </Project>
