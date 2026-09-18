@@ -14,8 +14,8 @@
     <PackageVersion Include="Skyline.DataMiner.Dev.Common" Version="10.5.9.2" />
     <PackageVersion Include="Skyline.DataMiner.Dev.Protocol" Version="10.5.9.2" />
     <PackageVersion Include="Skyline.DataMiner.Files.SLAnalyticsTypes" Version="10.5.9.2" />
-    <PackageVersion Include="Skyline.DataMiner.SDM" Version="1.0.4" />
-    <PackageVersion Include="Skyline.DataMiner.SDM.SourceGenerator.Runtime" Version="1.0.4" />
+    <PackageVersion Include="Skyline.DataMiner.SDM" Version="1.0.5" />
+    <PackageVersion Include="Skyline.DataMiner.SDM.SourceGenerator.Runtime" Version="1.0.5" />
     <PackageVersion Include="Skyline.DataMiner.Utils.DOM" Version="10.6.1.1" />
     <PackageVersion Include="Skyline.DataMiner.Utils.SecureCoding" Version="2.2.3" />
     <PackageVersion Include="Skyline.DataMiner.Utils.SecureCoding.Analyzers" Version="2.2.3" />

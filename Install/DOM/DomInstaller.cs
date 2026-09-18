@@ -34,6 +34,7 @@
 			new SdmVersion(2, 1, 0),
 			new SdmVersion(2, 1, 1),
 			new SdmVersion(2, 1, 2),
+			new SdmVersion(2, 1, 3),
 		};
 
 		private readonly IConnection _connection;
