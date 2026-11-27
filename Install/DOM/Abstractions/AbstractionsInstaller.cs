@@ -24,6 +24,7 @@
 					  [new SdmVersion(1, 0, 3)] = new Abstractions_V1_0_3(connection, logMethod),
 					  [new SdmVersion(1, 0, 4)] = new Abstractions_V1_0_4(connection, logMethod),
 					  [new SdmVersion(1, 0, 5)] = new Abstractions_V1_0_5(connection, logMethod),
+					  [new SdmVersion(1, 1, 0)] = new Abstractions_V1_1_0(connection, logMethod),
 				  },
 				  logMethod)
 		{
