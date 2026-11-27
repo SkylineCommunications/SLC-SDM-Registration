@@ -35,6 +35,7 @@
 			new SdmVersion(2, 1, 1),
 			new SdmVersion(2, 1, 2),
 			new SdmVersion(2, 1, 3),
+			new SdmVersion(2, 2, 0),
 		};
 
 		private readonly IConnection _connection;
@@ -115,6 +116,13 @@
 
 			// Register the abstractions devpack solution
 			var abstractionInstallers = new AbstractionsInstaller(_connection, _logMethod);
+			if (currentAbstractionsVersion != new SdmVersion(0, 0, 0) &&
+				!abstractionInstallers.Versions.Contains(currentAbstractionsVersion))
+			{
+				// A pre-release version of the abstractions devpack solution was installed.
+				currentAbstractionsVersion = new SdmVersion(0, 0, 0);
+			}
+
 			foreach (var version in abstractionInstallers.Versions)
 			{
 				if (currentAbstractionsVersion >= version)
