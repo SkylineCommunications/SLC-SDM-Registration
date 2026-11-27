@@ -15,7 +15,11 @@ updates:
       # FluentAssertions equal to or higher than 8.0.0 are a different license, which requires payment
       - dependency-name: "FluentAssertions"
         versions: [ ">=8.0.0" ]
-        
+      
+      # This needs to be equal or lower then our minimum dataminer version
+      - dependency-name: "Skyline.DataMiner.Utils.DOM"
+        versions: [ ">=10.5.10.0" ]
+
       # DevPacks represents the DMA on which to compile. Doesn't make sense to always be on the latest version.
       - dependency-name: "Skyline.DataMiner.Files.*"
       - dependency-name: "Skyline.DataMiner.Dev.*"
